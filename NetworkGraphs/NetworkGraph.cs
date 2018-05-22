@@ -30,6 +30,8 @@ namespace NetworkGraphs
 			Bitmap graph = DrawGraph(data, 3747);
 			graph.Save(saveAsFilename, ImageFormat.Png);
 
+			Console.ReadLine();
+
 			dataFilename = "../../../data/2018May_Lia_starting_point_1952.csv";
 			saveAsFilename = "auto_starting_point_1952.png";
 			data = LoadData_Lia(dataFilename);
@@ -63,6 +65,7 @@ namespace NetworkGraphs
 			Bitmap bitmap = new Bitmap(3000, 2000);
 			List<int> parentIds = new List<int>();
 			Dictionary<int, WedgeNode> nodes = new Dictionary<int, WedgeNode>();
+			Dictionary<int, int> idLabel = new Dictionary<int, int>();
 			using(Graphics graphics = Graphics.FromImage(bitmap))
 			{
 				graphics.SmoothingMode = SmoothingMode.AntiAlias;
@@ -95,7 +98,8 @@ namespace NetworkGraphs
 						Shapes.Point newCenter = Geometry.PointPastLine(parentNode.ParentNode.Center, parentNode.Center, calculations.Radius * 1.2);
 						parentNode.Center = newCenter;
 						double connectionToParentAtDegrees = Geometry.DegreesOfLine(newCenter, parentNode.ParentNode.Center, Geometry.CoordinatePlane.Screen);
-						parentNode.ChildrenWedge = new Shapes.WedgeUnbound(newCenter, connectionToParentAtDegrees + (calculations.AngleUnit / 2), 360 - calculations.AngleUnit);
+						Console.WriteLine("{0} -> {1} = {2} degrees", newCenter, parentNode.ParentNode.Center, connectionToParentAtDegrees);
+						parentNode.ChildrenWedge = new Shapes.WedgeUnbound(newCenter, connectionToParentAtDegrees + calculations.AngleUnit, 360 - calculations.AngleUnit);
 					}
 					else
 					{
@@ -108,6 +112,7 @@ namespace NetworkGraphs
 						if(nodes.ContainsKey(childId))
 							continue;
 
+						idLabel[childId] = (int)childAngle;
 						Shapes.Point childPoint = new Shapes.Point(childCenter.X + (Math.Cos(Shapes.Circle.DegreesToRadians(childAngle)) * calculations.Radius), childCenter.Y + (Math.Sin(Shapes.Circle.DegreesToRadians(childAngle)) * calculations.Radius));
 						nodes[childId] = new WedgeNode() {
 							Center = childPoint,
@@ -146,7 +151,10 @@ namespace NetworkGraphs
 				//nodes
 				foreach(int id in nodes.Keys)
 				{
-					DrawNode(graphics, nodes[id].Center, ShortLabel(id));
+					if(idLabel.ContainsKey(id))
+						DrawNode(graphics, nodes[id].Center, idLabel[id].ToString());
+					else
+						DrawNode(graphics, nodes[id].Center, ShortLabel(id));
 				}
 			}
 			return bitmap;

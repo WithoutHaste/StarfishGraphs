@@ -71,8 +71,8 @@ namespace StarfishGeometry
 			}
 
 			double lineLength = DistanceBetweenPoints(circleCenter, lineEnd);
-			double radians = Math.Asin((lineEnd.Y - circleCenter.Y) / lineLength);
-			double degrees = Shapes.Circle.RadiansToDegrees(radians);
+			double radians = Math.Abs(Math.Asin((lineEnd.Y - circleCenter.Y) / lineLength));
+			double degrees = Shapes.Circle.RadiansToDegrees(radians) % 360;
 			switch(direction)
 			{
 				case Direction.SouthEast: return degrees;
