@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StarfishGeometry
+namespace StarfishGeometry.Shapes
 {
 	public struct Point
 	{

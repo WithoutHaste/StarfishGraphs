@@ -40,10 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Circle.cs" />
+    <Compile Include="Shapes\Circle.cs" />
     <Compile Include="Geometry.cs" />
-    <Compile Include="Point.cs" />
+    <Compile Include="Shapes\Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shapes\Range.cs" />
+    <Compile Include="Shapes\Wedge.cs" />
+    <Compile Include="Shapes\WedgeUnbound.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

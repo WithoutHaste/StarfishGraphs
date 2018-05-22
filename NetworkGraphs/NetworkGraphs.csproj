@@ -47,10 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChildCalculations.cs" />
     <Compile Include="NetworkGraph.cs" />
     <Compile Include="NetworkGraph_Lia.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Range.cs" />
+    <Compile Include="WedgeNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

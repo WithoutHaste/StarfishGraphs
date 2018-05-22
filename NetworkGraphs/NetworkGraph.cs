@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StarfishGeometry;
+using Shapes = StarfishGeometry.Shapes;
 
 namespace NetworkGraphs
 {
@@ -29,11 +30,11 @@ namespace NetworkGraphs
 			Bitmap graph = DrawGraph(data, 3747);
 			graph.Save(saveAsFilename, ImageFormat.Png);
 
-			//dataFilename = "../../../data/2018May_Lia_starting_point_1952.csv";
-			//saveAsFilename = "starting_point_1952.png";
-			//data = LoadData_Lia(dataFilename);
-			//graph = DrawGraph_Lia_1952(data);
-			//graph.Save(saveAsFilename, ImageFormat.Png);
+			dataFilename = "../../../data/2018May_Lia_starting_point_1952.csv";
+			saveAsFilename = "auto_starting_point_1952.png";
+			data = LoadData_Lia(dataFilename);
+			graph = DrawGraph(data, 1952);
+			graph.Save(saveAsFilename, ImageFormat.Png);
 		}
 
 		private Dictionary<int, List<int>> LoadData_Lia(string filename)
@@ -57,23 +58,22 @@ namespace NetworkGraphs
 			return data;
 		}
 
-		private Bitmap DrawGraph(Dictionary<int, List<int>> data, int startNode)
+		private Bitmap DrawGraph(Dictionary<int, List<int>> data, int startNodeId)
 		{
 			Bitmap bitmap = new Bitmap(3000, 2000);
 			List<int> parentIds = new List<int>();
-			Dictionary<int, StarfishGeometry.Point> nodeLocations = new Dictionary<int, StarfishGeometry.Point>();
-			Dictionary<int, Range> nodeChildAngles = new Dictionary<int, Range>();
-			Dictionary<int, StarfishGeometry.Point> nodeChildCenter = new Dictionary<int, StarfishGeometry.Point>();
+			Dictionary<int, WedgeNode> nodes = new Dictionary<int, WedgeNode>();
 			using(Graphics graphics = Graphics.FromImage(bitmap))
 			{
 				graphics.SmoothingMode = SmoothingMode.AntiAlias;
 				graphics.Clear(Color.White);
 
-				StarfishGeometry.Point center = new StarfishGeometry.Point((int)(bitmap.Width / 2), (int)(bitmap.Height / 2));
-				nodeLocations[startNode] = center;
-				nodeChildAngles[startNode] = new Range(0, 360);
-				nodeChildCenter[startNode] = nodeLocations[startNode];
-				parentIds.Add(startNode);
+				Shapes.Point center = new Shapes.Point(bitmap.Width / 2, bitmap.Height / 2);
+				nodes[startNodeId] = new WedgeNode() {
+					Center = center,
+					ChildrenWedge = new Shapes.WedgeUnbound(center, 0, 360)
+				};
+				parentIds.Add(startNodeId);
 				
 				int parentIdsIndex = 0;
 				while(parentIdsIndex < parentIds.Count)
@@ -84,35 +84,39 @@ namespace NetworkGraphs
 						parentIdsIndex++;
 						continue;
 					}
+					WedgeNode parentNode = nodes[parentId];
 
-					int childCount = data[parentId].Where(x => !nodeLocations.ContainsKey(x)).Distinct().Count();
-					float childAngleUnit = nodeChildAngles[parentId].Span / childCount;
-					float childArcLength = (childCount * nodeWidth) * 1.2F;
-					float childRadius = (childArcLength / (2 * (float)Math.PI)) * (360 / nodeChildAngles[parentId].Span);
-					childRadius = Math.Max(nodeWidth * 2, childRadius);
-					if(parentId == 1951)
+					ChildCalculations calculations;
+					int childCount = data[parentId].Where(x => !nodes.ContainsKey(x)).Distinct().Count();
+					if(childCount > 2 && parentNode.ParentNode != null)
 					{
-						childRadius = Math.Max(nodeWidth * 6, childRadius);
+						//move node out from old parent to make room for new children
+						calculations = new ChildCalculations(childCount + 1, 360, nodeWidth);
+						Shapes.Point newCenter = Geometry.PointPastLine(parentNode.ParentNode.Center, parentNode.Center, calculations.Radius * 1.2);
+						parentNode.Center = newCenter;
+						double connectionToParentAtDegrees = Geometry.DegreesOfLine(newCenter, parentNode.ParentNode.Center, Geometry.CoordinatePlane.Screen);
+						parentNode.ChildrenWedge = new Shapes.WedgeUnbound(newCenter, connectionToParentAtDegrees + (calculations.AngleUnit / 2), 360 - calculations.AngleUnit);
 					}
-					float childChildAngleSpan = (nodeWidth / (2 * (float)Math.PI * childRadius)) * 360; //result is in degrees
-					float childAngle = nodeChildAngles[parentId].Start;
-					StarfishGeometry.Point childCenter = nodeChildCenter[parentId];
+					else
+					{
+						calculations = new ChildCalculations(childCount, parentNode.ChildrenWedge.Span, nodeWidth);
+					}
+					double childAngle = parentNode.ChildrenWedge.Start;
+					Shapes.Point childCenter = parentNode.ChildrenWedge.Center;
 					foreach(int childId in data[parentId])
 					{
-						if(nodeLocations.ContainsKey(childId))
+						if(nodes.ContainsKey(childId))
 							continue;
 
-						StarfishGeometry.Point childPoint = new StarfishGeometry.Point((int)(childCenter.X + (Math.Cos(StarfishGeometry.Circle.DegreesToRadians(childAngle)) * childRadius)), (int)(childCenter.Y + (Math.Sin(StarfishGeometry.Circle.DegreesToRadians(childAngle)) * childRadius)));
-						if(childId == 905)
-						{
-							childChildAngleSpan = 180;
-						}
-						nodeLocations[childId] = childPoint;
-						nodeChildAngles[childId] = new Range(childAngle - (childChildAngleSpan / 2), childAngle + (childChildAngleSpan / 2));
-						nodeChildCenter[childId] = childCenter;
+						Shapes.Point childPoint = new Shapes.Point(childCenter.X + (Math.Cos(Shapes.Circle.DegreesToRadians(childAngle)) * calculations.Radius), childCenter.Y + (Math.Sin(Shapes.Circle.DegreesToRadians(childAngle)) * calculations.Radius));
+						nodes[childId] = new WedgeNode() {
+							Center = childPoint,
+							ParentNode = parentNode,
+							ChildrenWedge = new Shapes.WedgeUnbound(childCenter, Shapes.Range.Centered(childAngle, calculations.ChildAngleSpan))
+						};
 						parentIds.Add(childId);
 
-						childAngle += childAngleUnit;
+						childAngle += calculations.AngleUnit;
 					}
 
 					parentIdsIndex++;
@@ -124,15 +128,15 @@ namespace NetworkGraphs
 				Pen thickPen = new Pen(Color.Black, 4);
 				foreach(int fromId in data.Keys)
 				{
-					if(!nodeLocations.ContainsKey(fromId))
+					if(!nodes.ContainsKey(fromId))
 						continue;
 					foreach(int toId in data[fromId].Distinct())
 					{
-						if(!nodeLocations.ContainsKey(toId))
+						if(!nodes.ContainsKey(toId))
 							continue;
 						graphics.DrawLine(pen, 
-							new System.Drawing.Point((int)nodeLocations[fromId].X, (int)nodeLocations[fromId].Y),
-							new System.Drawing.Point((int)nodeLocations[toId].X, (int)nodeLocations[toId].Y)
+							new System.Drawing.Point((int)nodes[fromId].Center.X, (int)nodes[fromId].Center.Y),
+							new System.Drawing.Point((int)nodes[toId].Center.X, (int)nodes[toId].Center.Y)
 						);
 						
 						//Point pointAlongLine = PointAlongLine(nodeLocations[toId], nodeLocations[fromId], nodeWidth * 0.75F);
@@ -140,15 +144,15 @@ namespace NetworkGraphs
 					}
 				}
 				//nodes
-				foreach(int id in nodeLocations.Keys)
+				foreach(int id in nodes.Keys)
 				{
-					DrawNode(graphics, nodeLocations[id], ShortLabel(id));
+					DrawNode(graphics, nodes[id].Center, ShortLabel(id));
 				}
 			}
 			return bitmap;
 		}
 
-		private void DrawNode(Graphics graphics, StarfishGeometry.Point point, string label)
+		private void DrawNode(Graphics graphics, Shapes.Point point, string label)
 		{
 			float fontSize = 12 * scale;
 			Font font = new Font("Arial", fontSize);

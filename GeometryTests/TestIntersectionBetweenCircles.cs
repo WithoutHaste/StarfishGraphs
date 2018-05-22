@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StarfishGeometry;
+using StarfishGeometry.Shapes;
 
 namespace GeometryTests
 {
