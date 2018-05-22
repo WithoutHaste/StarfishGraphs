@@ -1,6 +1,10 @@
 data/*
 Geometry/bin/*
-Geometry/obj/*
+Geometry/obj/Debug/*
+Geometry/obj/Release/TempPE/*
+Geometry/obj/Release/*.cache
+Geometry/obj/Release/*.txt
+Geometry/obj/Release/*.cs
 Geometry/.vs
 GeometryTests/bin/*
 GeometryTests/obj/*

@@ -5,7 +5,7 @@ using StarfishGeometry;
 namespace GeometryTests
 {
 	[TestClass]
-	public class IntersectionBetweenCircles
+	public class TestIntersectionBetweenCircles
 	{
 		[TestMethod]
 		public void NoIntersection_SameX()

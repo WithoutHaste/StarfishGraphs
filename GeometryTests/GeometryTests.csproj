@@ -50,7 +50,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="IntersectionBetweenCircles.cs" />
+    <Compile Include="TestCircle.cs" />
+    <Compile Include="TestIntersectionBetweenCircles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
