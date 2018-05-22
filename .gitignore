@@ -1,4 +1,10 @@
 data/*
+Geometry/bin/*
+Geometry/obj/*
+Geometry/.vs
+GeometryTests/bin/*
+GeometryTests/obj/*
+GeometryTests/.vs
 NetworkGraphs/bin/*
 NetworkGraphs/obj/*
 NetworkGraphs/.vs
