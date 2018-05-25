@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace StarfishGeometry.Shapes
 {
-	public struct Range
+	//todo: should I rename Start and End to Min and Max?
+	public class Range : Shape
 	{
-		public double Start;
-		public double End;
+		/// <summary>
+		/// Operations assume that Start is the minimum value.
+		/// </summary>
+		public readonly double Start;
+		public readonly double End;
 
 		public double Span { get { return End - Start; } }
 

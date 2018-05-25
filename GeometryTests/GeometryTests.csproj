@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -52,14 +53,21 @@
   <ItemGroup>
     <Compile Include="TestCircle.cs" />
     <Compile Include="TestDegreesOfLine.cs" />
-    <Compile Include="TestIntersectionBetweenCircles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestWedge.cs" />
+    <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Geometry\StarfishGeometry.csproj">
       <Project>{d94437cc-fab2-4e04-b71e-af49f65ce053}</Project>
       <Name>StarfishGeometry</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="diagrams\dummy.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

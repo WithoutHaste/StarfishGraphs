@@ -8,6 +8,60 @@ namespace GeometryTests
 	public class TestCircle
 	{
 		[TestMethod]
+		public void GetIntersectioPointsCircle_NoIntersection_SameX()
+		{
+			//assign
+			Circle a = new Circle(new Point(-2, 0), 1);
+			Circle b = new Circle(new Point(2, 0), 1);
+			//act
+			Point[] result = a.GetIntersectionPoints(b);
+			//assert
+			Assert.IsNull(result);
+		}
+
+		[TestMethod]
+		public void GetIntersectioPointsCircle_SingleIntersection_SameX()
+		{
+			//assign
+			Circle a = new Circle(new Point(-1, 0), 1);
+			Circle b = new Circle(new Point(1, 0), 1);
+			//act
+			Point[] result = a.GetIntersectionPoints(b);
+			//assert
+			Assert.AreEqual(1, result.Length);
+			Assert.AreEqual(new Point(0, 0), result[0]);
+		}
+
+		[TestMethod]
+		public void GetIntersectioPointsCircle_SingleIntersection_SameX_DiffRadius()
+		{
+			//assign
+			Circle a = new Circle(new Point(-2, 0), 2);
+			Circle b = new Circle(new Point(1, 0), 1);
+			//act
+			Point[] result = a.GetIntersectionPoints(b);
+			//assert
+			Assert.AreEqual(1, result.Length);
+			Assert.AreEqual(new Point(0, 0), result[0]);
+		}
+
+		[TestMethod]
+		public void GetIntersectioPointsCircle_DoubleIntersection_SameX()
+		{
+			//assign
+			Circle a = new Circle(new Point(-0.5, 0), 1);
+			Circle b = new Circle(new Point(0.5, 0), 1);
+			//act
+			Point[] result = a.GetIntersectionPoints(b);
+			Point minResult = (result[0] < result[1]) ? result[0] : result[1];
+			Point maxResult = (minResult == result[0]) ? result[1] : result[0];
+			//assert
+			Assert.AreEqual(2, result.Length);
+			Assert.AreEqual(new Point(0, -0.5 * Math.Sqrt(3)), minResult);
+			Assert.AreEqual(new Point(0, 0.5 * Math.Sqrt(3)), maxResult);
+		}
+
+		[TestMethod]
 		public void DegreesToRadians()
 		{
 			//assign

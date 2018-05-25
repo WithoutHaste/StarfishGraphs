@@ -10,13 +10,14 @@ namespace StarfishGeometry.Shapes
 	/// A wedge (aka circular sector) is a slice of a circle.
 	/// An unbounded wedge is a slice of circle that extends outward with no limit.
 	/// </summary>
-	public struct WedgeUnbound
+	public class WedgeUnbound : Shape
 	{
-		public Point Center;
-		public Range Degrees;
+		public readonly Point Center;
+		public readonly Range Degrees;
 
 		public double Span { get { return Degrees.Span; } }
 		public double Start { get { return Degrees.Start; } }
+		public double End { get { return Degrees.End; } }
 
 		public WedgeUnbound(Point c, Range r)
 		{

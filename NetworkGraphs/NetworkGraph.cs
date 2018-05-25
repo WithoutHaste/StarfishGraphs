@@ -71,6 +71,7 @@ namespace NetworkGraphs
 				Shapes.Point center = new Shapes.Point(bitmap.Width / 2, bitmap.Height / 2);
 				nodes[startNodeId] = new WedgeNode() {
 					Center = center,
+                    Wedge = new Shapes.Wedge(new Shapes.Circle(center, nodeWidth / 2), 0, 360),
 					ChildrenWedge = new Shapes.WedgeUnbound(center, 0, 360)
 				};
 				parentIds.Add(startNodeId);
@@ -101,6 +102,13 @@ namespace NetworkGraphs
 					{
 						calculations = new ChildCalculations(childCount, parentNode.ChildrenWedge.Span, nodeWidth);
 					}
+					while(DoesCollide(parentId, nodes, parentNode.Center, calculations.Radius))
+					{
+						//move node out from old parent to make room for new children
+						Shapes.Point newCenter = Geometry.PointPastLine(parentNode.ParentNode.Center, parentNode.Center, nodeWidth * 1.2);
+						parentNode.Center = newCenter;
+						parentNode.ChildrenWedgeCenter = newCenter;
+					}
 					double childAngle = parentNode.ChildrenWedge.Start;
 					Shapes.Point childCenter = parentNode.ChildrenWedge.Center;
 					foreach(int childId in data[parentId])
@@ -111,6 +119,7 @@ namespace NetworkGraphs
 						Shapes.Point childPoint = new Shapes.Point(childCenter.X + (Math.Cos(Shapes.Circle.DegreesToRadians(childAngle)) * calculations.Radius), childCenter.Y + (Math.Sin(Shapes.Circle.DegreesToRadians(childAngle)) * calculations.Radius));
 						nodes[childId] = new WedgeNode() {
 							Center = childPoint,
+		                    Wedge = new Shapes.Wedge(new Shapes.Circle(parentNode.Center, calculations.Radius), childAngle, childAngle + calculations.AngleUnit),
 							ParentNode = parentNode,
 							ChildrenWedge = new Shapes.WedgeUnbound(childCenter, Shapes.Range.Centered(childAngle, calculations.ChildAngleSpan))
 						};
@@ -177,5 +186,21 @@ namespace NetworkGraphs
 			return id.ToString();
 		}
 
+		private bool DoesCollide(int parentId, Dictionary<int, WedgeNode> nodes, Shapes.Point center, double radius)
+		{
+			foreach(int nodeId in nodes.Keys)
+			{
+				if(nodeId == parentId)
+					continue;
+				if(DoesCollide(nodes[nodeId], center, radius))
+					return true;
+			}
+			return false;
+		}
+
+		private bool DoesCollide(WedgeNode otherNode, Shapes.Point center, double radius)
+		{
+			return Geometry.WedgesOverlap(otherNode.Wedge, new Shapes.Wedge(new Shapes.Circle(center, radius), 0, 360));
+		}
 	}
 }

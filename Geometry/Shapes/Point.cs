@@ -1,25 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace StarfishGeometry.Shapes
 {
-	public struct Point
+	public class Point : Shape, IDraw
 	{
 		/// <summary>
 		/// When determining equality, X and Y have a +- margin of error
 		/// </summary>
 		public static double MARGIN_OF_ERROR = 0.00000000001;
 
-		public double X;
-		public double Y;
+		public readonly double X;
+		public readonly double Y;
+
+		public double MaxX { get { return X; } }
+		public double MaxY { get { return Y; } }
 
 		public Point(double x, double y)
 		{
 			X = x;
 			Y = y;
+			if(Double.IsNaN(x))
+			{
+				int r = 5;
+			}
+		}
+
+		/// <summary>
+		/// Distance between this point and point B.
+		/// </summary>
+		public double Distance(Point b)
+		{
+			return Math.Sqrt(Math.Pow(b.X - this.X, 2) + Math.Pow(b.Y - this.Y, 2));
+		}
+
+		public bool Overlaps(LineSegment line)
+		{
+			return line.Overlaps(this);
 		}
 
 		public static Point operator +(Point a, Point b)
@@ -104,6 +125,17 @@ namespace StarfishGeometry.Shapes
 		public override string ToString()
 		{
 			return String.Format("({0},{1})", X, Y);
+		}
+
+		public void Paint(Graphics graphics, Pen pen, double unitsToPixels)
+		{
+			graphics.DrawArc(pen, 
+				(float)((X - 1) * unitsToPixels), 
+				(float)((Y - 1) * unitsToPixels), 
+				(float)(2 * unitsToPixels), 
+				(float)(2 * unitsToPixels), 
+				0, 
+				360); 
 		}
 	}
 }

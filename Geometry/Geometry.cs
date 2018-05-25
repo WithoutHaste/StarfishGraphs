@@ -23,41 +23,11 @@ namespace StarfishGeometry
 		public enum Direction : int { None = 0, East, SouthEast, South, SouthWest, West, NorthWest, North, NorthEast };
 
 		/// <summary>
-		/// Returns null (no intersection), an array of length 1, or an array of length 2
-		/// </summary>
-		public static Point[] IntersectionBetweenCircles(Circle a, Circle b)
-		{
-			//following the method in math/intersectionCircleCircle.png
-
-			double d = DistanceBetweenPoints(a.Center, b.Center); //distance between centers
-			if(d > a.Radius + b.Radius)
-			{
-				return null; //circles too far apart to intersect
-			}
-
-			//the radical line is the line between the two intersecting points of the circles
-			//Point c is the center of the radical line, which is also on the line between the centers
-			double dA = (Math.Pow(a.Radius, 2) - Math.Pow(b.Radius, 2) + Math.Pow(d, 2)) / (2 * d); //distance from centerA to pointC
-			if(dA == a.Radius)
-			{
-				return new Point[] { PointOnLine(a.Center, b.Center, a.Radius) }; //circles intersect at single point
-			}
-			Point c = a.Center + dA * (b.Center - a.Center) / d;
-
-			//h is the distance from pointC to either intersection point (the hypotenus of triangle centerA-C-intersection)
-			double h = Math.Sqrt(Math.Pow(a.Radius, 2) - Math.Pow(dA, 2));
-
-			return new Point[] {
-				new Point(c.X + (h * (b.Y - a.Y) / d), c.Y - h * (b.X - a.X) / d),
-				new Point(c.X - (h * (b.Y - a.Y) / d), c.Y + h * (b.X - a.X) / d)
-			};
-		}
-
-		/// <summary>
 		/// Given a line emerging from the center of a circle, what degrees is the line angle at? 0 degrees is East from center, and increases clockwise.
 		/// </summary>
 		public static double DegreesOfLine(Point circleCenter, Point lineEnd, CoordinatePlane coordinatePlane)
 		{
+			//todo: move this into Circle object
 			if(coordinatePlane == CoordinatePlane.None)
 				throw new Exception("Coordinate plane required");
 
@@ -70,7 +40,7 @@ namespace StarfishGeometry
 				case Direction.North: return 270;
 			}
 
-			double lineLength = DistanceBetweenPoints(circleCenter, lineEnd);
+			double lineLength = circleCenter.Distance(lineEnd);
 			double radians = Math.Abs(Math.Asin((lineEnd.Y - circleCenter.Y) / lineLength));
 			double degrees = Shapes.Circle.RadiansToDegrees(radians) % 360;
 			switch(direction)
@@ -81,12 +51,7 @@ namespace StarfishGeometry
 				case Direction.NorthEast: return 360 - degrees;
 			}
 
-			throw new Exception("Unsupported direction.");
-		}
-
-		public static double DistanceBetweenPoints(Point a, Point b)
-		{
-			return Math.Sqrt(Math.Pow(b.X - a.X, 2) + Math.Pow(b.Y - a.Y, 2));
+			throw new Exception(String.Format("Unsupported direction: {0}.", direction));
 		}
 
 		/// <summary>
@@ -94,7 +59,7 @@ namespace StarfishGeometry
 		/// </summary>
 		public static Point PointOnLine(Point a, Point b, double distance)
 		{
-			double lineLength = DistanceBetweenPoints(a, b);
+			double lineLength = a.Distance(b);
 			if(lineLength == 0)
 				throw new Exception("Line length must be greater than 0");
 			double lengthRatio = distance / lineLength;
@@ -108,7 +73,7 @@ namespace StarfishGeometry
 		/// </summary>
 		public static Point PointPastLine(Point a, Point b, double distance)
 		{
-			double lineLength = DistanceBetweenPoints(a, b);
+			double lineLength = a.Distance(b);
 			return PointOnLine(a, b, lineLength + distance);
 		}
 
