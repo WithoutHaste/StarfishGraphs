@@ -20,7 +20,7 @@ namespace GeometryTests
 		//todo: auto center diagram in minimal space with a small margin
 		public static void SaveDiagram(string className, string methodName, StarfishGeometry.Shapes.IDraw[] shapes)
 		{
-			double margin = 0.1 * UNITS_TO_PIXELS;
+			double margin = 0.5 * UNITS_TO_PIXELS;
 			double width = shapes.Select(s => s.MaxX).Max() * UNITS_TO_PIXELS;
 			double height = shapes.Select(s => s.MaxY).Max() * UNITS_TO_PIXELS;
 
@@ -28,6 +28,7 @@ namespace GeometryTests
 			using(Graphics graphics = Graphics.FromImage(bitmap))
 			{
 				Pen pen = new Pen(Color.Black, 1);
+				graphics.SmoothingMode = SmoothingMode.AntiAlias;
 				graphics.Clear(Color.White);
 				foreach(IDraw shape in shapes)
 				{

@@ -171,7 +171,7 @@ namespace StarfishGeometry.Shapes
 				(float)(Circle.Diameter * unitsToPixels), 
 				(float)(Circle.Diameter * unitsToPixels), 
 				(float)Degrees.Start, 
-				(float)Degrees.End);
+				(float)Degrees.Span);
 			graphics.DrawLine(pen,
 				(float)(Circle.Center.X * unitsToPixels),
 				(float)(Circle.Center.Y * unitsToPixels),

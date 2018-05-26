@@ -187,8 +187,8 @@ namespace StarfishGeometry.Shapes
 			}
 			else //radians < Math.PI * 2
 			{
-				deltaX = Math.Cos(radians - RADIANS_270DEGREES) * Radius;
-				deltaY = -1 * Math.Sin(radians - RADIANS_270DEGREES) * Radius;
+				deltaX = Math.Cos(radians) * Radius;
+				deltaY = Math.Sin(radians) * Radius;
 			}
 
 			switch(CoordinatePlane)

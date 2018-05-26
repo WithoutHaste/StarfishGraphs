@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace StarfishGeometry.Shapes
 {
+	//todo: can user set a geometry-wide margin of error? some of these ops use the margin of error where you can't specify it
 	public class Point : Shape, IDraw
 	{
 		/// <summary>

@@ -61,6 +61,213 @@ namespace GeometryTests
 			Assert.AreEqual(new Point(0, 0.5 * Math.Sqrt(3)), maxResult);
 		}
 
+		//Resource: https://www.geogebra.org/m/qBfHYSTQ
+		//gives points around a unit circle
+
+		[TestMethod]
+		public void PointAtDegrees_0()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 0;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(1, 0), result);
+		}
+
+		[TestMethod]
+		public void PointAtDegrees_30()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 30;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(0.86602540378, 0.5), result);
+		}
+
+		[TestMethod]
+		public void PointAtDegrees_45()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 45;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(0.70710678118, 0.70710678118), result);
+		}
+
+		[TestMethod]
+		public void PointAtDegrees_60()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 60;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(0.5, 0.86602540378), result);
+		}
+
+		[TestMethod]
+		public void PointAtDegrees_90()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 90;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(0, 1), result);
+		}
+
+		[TestMethod]
+		public void PointAtDegrees_120()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 120;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(-0.86602540378, 0.5), result);
+		}
+
+		[TestMethod]
+		public void PointAtDegrees_135()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 135;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(-0.70710678118, 0.70710678118), result);
+		}
+
+		[TestMethod]
+		public void PointAtDegrees_150()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 150;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(-0.5, 0.86602540378), result);
+		}
+
+		[TestMethod]
+		public void PointAtDegrees_180()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 180;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(-1, 0), result);
+		}
+
+		[TestMethod]
+		public void PointAtDegrees_210()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 210;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(-0.86602540378, -0.5), result);
+		}
+
+		[TestMethod]
+		public void PointAtDegrees_225()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 225;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(-0.70710678118, -0.70710678118), result);
+		}
+
+		[TestMethod]
+		public void PointAtDegrees_240()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 240;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(-0.5, -0.86602540378), result);
+		}
+
+		[TestMethod]
+		public void PointAtDegrees_270()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 270;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(0, -1), result);
+		}
+
+		[TestMethod]
+		public void PointAtDegrees_300()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 300;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(0.5, -0.86602540378), result);
+		}
+
+		[TestMethod]
+		public void PointAtDegrees_315()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 315;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(0.70710678118, -0.70710678118), result);
+		}
+
+		[TestMethod]
+		public void PointAtDegrees_330()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 330;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(0.86602540378, -0.5), result);
+		}
+
+		[TestMethod]
+		public void PointAtDegrees_360()
+		{
+			//assign
+			Circle a = new Circle(new Point(0, 0), 1);
+			double degrees = 360;
+			//act
+			Point result = a.PointAtDegrees(degrees);
+			//assert
+			Assert.AreEqual(new Point(1, 0), result);
+		}
+
 		[TestMethod]
 		public void DegreesToRadians()
 		{
