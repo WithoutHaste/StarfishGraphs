@@ -133,11 +133,9 @@ namespace StarfishGeometry.Shapes
 				return false;
 			foreach(Point point in fullCircleIntersections)
 			{
-				double degreesA = Geometry.DegreesOfLine(a.Circle.Center, point, a.Circle.CoordinatePlane);
-				if(a.DegreesContains(degreesA))
+				if(a.Circle.Center == point || a.DegreesContains(Geometry.DegreesOfLine(a.Circle.Center, point, a.Circle.CoordinatePlane)))
 				{
-					double degreesB = Geometry.DegreesOfLine(b.Circle.Center, point, b.Circle.CoordinatePlane);
-					if(b.DegreesContains(degreesB))
+					if(b.Circle.Center == point || b.DegreesContains(Geometry.DegreesOfLine(b.Circle.Center, point, b.Circle.CoordinatePlane)))
 					{
 						return true;
 					}

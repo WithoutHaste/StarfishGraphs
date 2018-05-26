@@ -87,13 +87,13 @@ namespace StarfishGeometry
 				return Direction.None;
 			switch(coordinatePlane)
 			{
-				case CoordinatePlane.Screen: return LineDirection_ComputerScreen(a, b);
+				case CoordinatePlane.Screen: return LineDirection_Screen(a, b);
 				case CoordinatePlane.Paper: return LineDirection_Paper(a, b);
 				default: throw new Exception("Unsupported coordinate plane.");
 			}
 		}
 
-		private static Direction LineDirection_ComputerScreen(Point a, Point b)
+		private static Direction LineDirection_Screen(Point a, Point b)
 		{
 			if(a.X == b.X)
 			{
