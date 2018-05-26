@@ -93,6 +93,10 @@ namespace StarfishGeometry.Shapes
 			{
 				return null; //circles too far apart to intersect
 			}
+			if(a.ContainsOrIsContained(b))
+			{
+				return null; //one circle is wholly inside the other
+			}
 
 			//the radical line is the line between the two intersecting points of the circles
 			//Point c is the center of the radical line, which is also on the line between the centers
