@@ -67,7 +67,7 @@ namespace StarfishGeometry.Shapes
 			{
 				//parallel lines don't overlap unless they are right on top of each other
 				//meaning, one of the points must be on the other line
-				return (a.Overlaps(b.A) || a.Overlaps(b.B));
+				return (a.Overlaps(b.A) || a.Overlaps(b.B) || b.Overlaps(a.A) || b.Overlaps(a.B));
 			}
 			//do lines intercept at a point?
 			double x = (b.YIntercept - a.YIntercept) / (a.Slope - b.Slope);

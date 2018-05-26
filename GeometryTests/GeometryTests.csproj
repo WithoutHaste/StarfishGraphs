@@ -54,6 +54,7 @@
     <Compile Include="TestCircle.cs" />
     <Compile Include="TestDegreesOfLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestLineSegment.cs" />
     <Compile Include="TestWedge.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
