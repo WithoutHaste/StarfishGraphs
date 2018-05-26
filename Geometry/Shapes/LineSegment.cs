@@ -51,7 +51,7 @@ namespace StarfishGeometry.Shapes
 
 		public bool Overlaps(Point c)
 		{
-			if(c.Y != (Slope * c.X) + YIntercept)
+			if(!Geometry.WithinMarginOfError(c.Y, (Slope * c.X) + YIntercept))
 				return false;
 			return (c.X >= Math.Min(A.X, B.X) && c.X <= Math.Max(A.X, B.X) 
 				&& c.Y >= Math.Min(A.Y, B.Y) && c.Y <= Math.Max(A.Y, B.Y)); 
@@ -63,7 +63,7 @@ namespace StarfishGeometry.Shapes
 			LineSegment a = this;
 			double slopeA = a.Slope; 
 			double slopeB = b.Slope;
-			if(slopeA == slopeB)
+			if(slopeA == slopeB) //marginOfError does not apply to slope, since slopes that don't match will result in overlapping lines anyway
 			{
 				//parallel lines don't overlap unless they are right on top of each other
 				//meaning, one of the points must be on the other line
@@ -74,6 +74,11 @@ namespace StarfishGeometry.Shapes
 			double y = (a.Slope * x) - a.YIntercept;
 			Point interceptPoint = new Point(x, y);
 			return (a.Overlaps(interceptPoint) && b.Overlaps(interceptPoint));
+		}
+
+		public override string ToString()
+		{
+			return String.Format("{0}-{1}", A, B);
 		}
 
 		public void Paint(Graphics graphics, Pen pen, double unitsToPixels)

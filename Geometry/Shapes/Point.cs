@@ -10,11 +10,6 @@ namespace StarfishGeometry.Shapes
 	//todo: can user set a geometry-wide margin of error? some of these ops use the margin of error where you can't specify it
 	public class Point : Shape, IDraw
 	{
-		/// <summary>
-		/// When determining equality, X and Y have a +- margin of error
-		/// </summary>
-		public static double MARGIN_OF_ERROR = 0.00000000001;
-
 		public readonly double X;
 		public readonly double Y;
 
@@ -25,10 +20,6 @@ namespace StarfishGeometry.Shapes
 		{
 			X = x;
 			Y = y;
-			if(Double.IsNaN(x))
-			{
-				int r = 5;
-			}
 		}
 
 		/// <summary>
@@ -89,24 +80,12 @@ namespace StarfishGeometry.Shapes
 
 		public static bool operator ==(Point a, Point b)
 		{
-			return a.Equals(b, MARGIN_OF_ERROR);
+			return (Geometry.WithinMarginOfError(a.X, b.X) && Geometry.WithinMarginOfError(a.Y, b.Y));
 		}
 
 		public static bool operator !=(Point a, Point b)
 		{
-			return (! a.Equals(b, MARGIN_OF_ERROR));
-		}
-
-		/// <summary>
-		/// Determines equality with a custom margin of error
-		/// </summary>
-		public bool Equals(Point b, double marginOfError)
-		{
-			if(b.X < this.X - marginOfError || b.X > this.X + marginOfError)
-				return false;
-			if(b.Y < this.Y - marginOfError || b.Y > this.Y + marginOfError)
-				return false;
-			return true;
+			return (!Geometry.WithinMarginOfError(a.X, b.X) || !Geometry.WithinMarginOfError(a.Y, b.Y));
 		}
 
 		public override bool Equals(Object b)

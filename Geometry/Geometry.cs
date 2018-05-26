@@ -9,6 +9,15 @@ namespace StarfishGeometry
 {
     public static class Geometry
     {
+		//todo: move CoordinatePlane setting to public static like this
+
+		//todo: make sure MarginOfError is applied to all equality in shapes operations
+
+		/// <summary>
+		/// When determining equality, all values have a +- margin of error.
+		/// </summary>
+		public static double MarginOfError = 0.00000001;
+
 		public enum CoordinatePlane : int {
 			None = 0,
 			/// <summary>
@@ -21,6 +30,11 @@ namespace StarfishGeometry
 			Paper
 		};
 		public enum Direction : int { None = 0, East, SouthEast, South, SouthWest, West, NorthWest, North, NorthEast };
+
+		public static bool WithinMarginOfError(double a, double b)
+		{
+			return (a >= b - MarginOfError && a <= b + MarginOfError);
+		}
 
 		/// <summary>
 		/// Given a line emerging from the center of a circle, what degrees is the line angle at? 0 degrees is East from center, and increases clockwise.
