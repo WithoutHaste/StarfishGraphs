@@ -5,8 +5,8 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 using StarfishGeometry;
 using StarfishGeometry.Shapes;
 
@@ -18,7 +18,7 @@ namespace GeometryTests
 		public static double UNITS_TO_PIXELS = 40;
 
 		//todo: auto center diagram in minimal space with a small margin
-		public static void SaveDiagram(string className, string methodName, StarfishGeometry.Shapes.IDraw[] shapes)
+		public static void SaveDiagram(StarfishGeometry.Shapes.IDraw[] shapes, string className, [CallerMemberName] string methodName = "unknown")
 		{
 			double margin = 0.5 * UNITS_TO_PIXELS;
 			double width = shapes.Select(s => s.MaxX).Max() * UNITS_TO_PIXELS;

@@ -71,7 +71,7 @@ namespace StarfishGeometry.Shapes
 			}
 			//do lines intercept at a point?
 			double x = (b.YIntercept - a.YIntercept) / (a.Slope - b.Slope);
-			double y = (a.Slope * x) - a.YIntercept;
+			double y = (a.Slope * x) + a.YIntercept;
 			Point interceptPoint = new Point(x, y);
 			return (a.Overlaps(interceptPoint) && b.Overlaps(interceptPoint));
 		}
