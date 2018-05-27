@@ -12,6 +12,7 @@ namespace GeometryTests
 		public void OverlapsWedge_LineEdge_AdjacentExternal_True()
 		{
 			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
 			Wedge a = new Wedge(new Circle(new Point(2, 2), 2), 260, 280);
 			LineSegment aEdge = new LineSegment(a.Circle.Center, a.EndPoint);
 			Point centerB =  Geometry.PointOnLine(a.Circle.Center, a.EndPoint, a.Circle.Radius * 0.25);

@@ -63,7 +63,7 @@ namespace StarfishGeometry.Shapes
 			LineSegment a = this;
 			double slopeA = a.Slope; 
 			double slopeB = b.Slope;
-			if(slopeA == slopeB) //marginOfError does not apply to slope, since slopes that don't match will result in overlapping lines anyway
+			if(Geometry.WithinMarginOfError(slopeA, slopeB))
 			{
 				//parallel lines don't overlap unless they are right on top of each other
 				//meaning, one of the points must be on the other line

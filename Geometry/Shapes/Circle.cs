@@ -173,8 +173,8 @@ namespace StarfishGeometry.Shapes
 			}
 			else if(radians < RADIANS_180DEGREES)
 			{
-				deltaX = -1 * Math.Cos(radians - RADIANS_90DEGREES) * Radius;
-				deltaY = Math.Sin(radians - RADIANS_90DEGREES) * Radius;
+				deltaX = -1 * Math.Cos(RADIANS_180DEGREES - radians) * Radius;
+				deltaY = Math.Sin(RADIANS_180DEGREES - radians) * Radius;
 			}
 			else if(radians == RADIANS_180DEGREES)
 			{
@@ -191,8 +191,8 @@ namespace StarfishGeometry.Shapes
 			}
 			else //radians < Math.PI * 2
 			{
-				deltaX = Math.Cos(radians) * Radius;
-				deltaY = Math.Sin(radians) * Radius;
+				deltaX = Math.Cos(RADIANS_360DEGREES - radians) * Radius;
+				deltaY = -1 * Math.Sin(RADIANS_360DEGREES - radians) * Radius;
 			}
 
 			switch(CoordinatePlane)

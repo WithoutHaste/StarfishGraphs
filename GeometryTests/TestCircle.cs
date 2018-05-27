@@ -80,36 +80,39 @@ namespace GeometryTests
 		public void PointAtDegrees_30()
 		{
 			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.01;
 			Circle a = new Circle(new Point(0, 0), 1);
 			double degrees = 30;
 			//act
 			Point result = a.PointAtDegrees(degrees);
 			//assert
-			Assert.AreEqual(new Point(0.86602540378, 0.5), result);
+			Assert.AreEqual(new Point(0.87, 0.5), result);
 		}
 
 		[TestMethod]
 		public void PointAtDegrees_45()
 		{
 			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.01;
 			Circle a = new Circle(new Point(0, 0), 1);
 			double degrees = 45;
 			//act
 			Point result = a.PointAtDegrees(degrees);
 			//assert
-			Assert.AreEqual(new Point(0.70710678118, 0.70710678118), result);
+			Assert.AreEqual(new Point(0.71, 0.71), result);
 		}
 
 		[TestMethod]
 		public void PointAtDegrees_60()
 		{
 			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.01;
 			Circle a = new Circle(new Point(0, 0), 1);
 			double degrees = 60;
 			//act
 			Point result = a.PointAtDegrees(degrees);
 			//assert
-			Assert.AreEqual(new Point(0.5, 0.86602540378), result);
+			Assert.AreEqual(new Point(0.5, 0.87), result);
 		}
 
 		[TestMethod]
@@ -128,36 +131,39 @@ namespace GeometryTests
 		public void PointAtDegrees_120()
 		{
 			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.01;
 			Circle a = new Circle(new Point(0, 0), 1);
 			double degrees = 120;
 			//act
 			Point result = a.PointAtDegrees(degrees);
 			//assert
-			Assert.AreEqual(new Point(-0.86602540378, 0.5), result);
+			Assert.AreEqual(new Point(-0.5, 0.87), result);
 		}
 
 		[TestMethod]
 		public void PointAtDegrees_135()
 		{
 			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.01;
 			Circle a = new Circle(new Point(0, 0), 1);
 			double degrees = 135;
 			//act
 			Point result = a.PointAtDegrees(degrees);
 			//assert
-			Assert.AreEqual(new Point(-0.70710678118, 0.70710678118), result);
+			Assert.AreEqual(new Point(-0.71, 0.71), result);
 		}
 
 		[TestMethod]
 		public void PointAtDegrees_150()
 		{
 			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.01;
 			Circle a = new Circle(new Point(0, 0), 1);
 			double degrees = 150;
 			//act
 			Point result = a.PointAtDegrees(degrees);
 			//assert
-			Assert.AreEqual(new Point(-0.5, 0.86602540378), result);
+			Assert.AreEqual(new Point(-0.87, 0.5), result);
 		}
 
 		[TestMethod]
@@ -176,36 +182,39 @@ namespace GeometryTests
 		public void PointAtDegrees_210()
 		{
 			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.01;
 			Circle a = new Circle(new Point(0, 0), 1);
 			double degrees = 210;
 			//act
 			Point result = a.PointAtDegrees(degrees);
 			//assert
-			Assert.AreEqual(new Point(-0.86602540378, -0.5), result);
+			Assert.AreEqual(new Point(-0.87, -0.5), result);
 		}
 
 		[TestMethod]
 		public void PointAtDegrees_225()
 		{
 			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.01;
 			Circle a = new Circle(new Point(0, 0), 1);
 			double degrees = 225;
 			//act
 			Point result = a.PointAtDegrees(degrees);
 			//assert
-			Assert.AreEqual(new Point(-0.70710678118, -0.70710678118), result);
+			Assert.AreEqual(new Point(-0.71, -0.71), result);
 		}
 
 		[TestMethod]
 		public void PointAtDegrees_240()
 		{
 			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.01;
 			Circle a = new Circle(new Point(0, 0), 1);
 			double degrees = 240;
 			//act
 			Point result = a.PointAtDegrees(degrees);
 			//assert
-			Assert.AreEqual(new Point(-0.5, -0.86602540378), result);
+			Assert.AreEqual(new Point(-0.5, -0.87), result);
 		}
 
 		[TestMethod]
@@ -224,36 +233,39 @@ namespace GeometryTests
 		public void PointAtDegrees_300()
 		{
 			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.01;
 			Circle a = new Circle(new Point(0, 0), 1);
 			double degrees = 300;
 			//act
 			Point result = a.PointAtDegrees(degrees);
 			//assert
-			Assert.AreEqual(new Point(0.5, -0.86602540378), result);
+			Assert.AreEqual(new Point(0.5, -0.87), result);
 		}
 
 		[TestMethod]
 		public void PointAtDegrees_315()
 		{
 			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.01;
 			Circle a = new Circle(new Point(0, 0), 1);
 			double degrees = 315;
 			//act
 			Point result = a.PointAtDegrees(degrees);
 			//assert
-			Assert.AreEqual(new Point(0.70710678118, -0.70710678118), result);
+			Assert.AreEqual(new Point(0.71, -0.71), result);
 		}
 
 		[TestMethod]
 		public void PointAtDegrees_330()
 		{
 			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.01;
 			Circle a = new Circle(new Point(0, 0), 1);
 			double degrees = 330;
 			//act
 			Point result = a.PointAtDegrees(degrees);
 			//assert
-			Assert.AreEqual(new Point(0.86602540378, -0.5), result);
+			Assert.AreEqual(new Point(0.87, -0.5), result);
 		}
 
 		[TestMethod]
