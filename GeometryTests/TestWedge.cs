@@ -297,5 +297,67 @@ namespace GeometryTests
 			Assert.IsTrue(result);
 		}
 
+		[TestMethod]
+		public void OverlapsWedge_EntirelyInside_CircleInCircle_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), -45, 45);
+			Wedge b = new Wedge(new Circle(new Point(4, 3), 0.5), 300, 330);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void DegreesContains_RangeCrosses360_Below360_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), -45, 45);
+			//act
+			bool result = a.DegreesContains(355);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void DegreesContains_RangeCrosses360_Above0_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), -45, 45);
+			//act
+			bool result = a.DegreesContains(10);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void DegreesContains_RangeCrosses360_Below360_False()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), -45, 45);
+			//act
+			bool result = a.DegreesContains(-50);
+			//assert
+			Assert.IsFalse(result);
+		}
+
+		[TestMethod]
+		public void DegreesContains_RangeCrosses360_Above0_False()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), -45, 45);
+			//act
+			bool result = a.DegreesContains(55);
+			//assert
+			Assert.IsFalse(result);
+		}
 	}
 }

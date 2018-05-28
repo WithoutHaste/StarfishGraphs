@@ -94,8 +94,14 @@ namespace StarfishGeometry.Shapes
 				return true;
 			//one wedge entirely contains the other (all three points from one wedge inside the other)
 			//	there are cases where all three points are inside, but arc protrudes outside - not important here since that still counts as overlapping
-			if(Contains(b.Circle.Center) && Contains(b.StartPoint) && Contains(b.EndPoint))
-				return true;
+			if(Contains(b.Circle.Center))
+			{
+				if(Contains(b.StartPoint))
+				{
+					if(Contains(b.EndPoint))
+						return true;
+				}
+			}
 
 			return false;
 		}
@@ -158,7 +164,14 @@ namespace StarfishGeometry.Shapes
 
 		public bool DegreesContains(double degree)
 		{
-			return (Degrees.Start % 360 <= degree && Degrees.End % 360 >= degree);
+			degree = Range.Mod(degree, 360);
+			double start = Range.Mod(Degrees.Start, 360);
+			double end = Range.Mod(Degrees.End, 360);
+			if(start <= end)
+			{
+				return (start <= degree && end >= degree);
+			}
+			return ((start <= degree && degree <= 360) || (0 <= degree && end >= degree));
 		}
 
 		public void Paint(Graphics graphics, Pen pen, double unitsToPixels)
