@@ -52,7 +52,7 @@ namespace StarfishGeometry.Shapes
 			double cSlope = PerpendicularSlope;
 			double cYIntercept = c.Y - (cSlope * c.X);
 			double x = (cYIntercept - this.YIntercept) / (this.Slope - cSlope);
-			double y = (this.Slope * x) - this.YIntercept;
+			double y = (this.Slope * x) + this.YIntercept;
 			return new Point(x, y);
 		}
 	}

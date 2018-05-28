@@ -67,12 +67,132 @@ namespace GeometryTests
 		}
 
 		[TestMethod]
-		public void OverlapsWedge_ArcAndLineEdge_CircleInCircle_True()
+		public void OverlapsWedge_ArcAndLineEdge_CircleInCircle_SmallBelow_True()
 		{
 			//assign
 			StarfishGeometry.Geometry.MarginOfError = 0.000001;
 			Wedge a = new Wedge(new Circle(new Point(2, 2), 2), 190, 230);
 			Wedge b = new Wedge(new Circle(new Point(1.8, 2.3), 0.75), 190, 230);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void OverlapsWedge_ArcAndLineEdge_CircleInCircle_SmallAbove_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(2, 2), 2), 190, 230);
+			Wedge b = new Wedge(new Circle(new Point(1.8, 1.5), 0.75), 190, 230);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void OverlapsWedge_ArcAndLineEdge_SmallBelow_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(2, 2), 2), 190, 230);
+			Wedge b = new Wedge(new Circle(new Point(3.2, 1.5), 2.5), 190, 230);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void OverlapsWedge_ArcAndLineEdge_SmallAbove_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(2, 2), 2), 190, 230);
+			Wedge b = new Wedge(new Circle(new Point(2.7, 3.2), 2.5), 190, 230);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void OverlapsWedge_LineEdge_CrossWise_CircleInCircle_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(2, 2), 2), 190, 230);
+			Wedge b = new Wedge(new Circle(new Point(1.8, 2.3), 0.75), 260, 280);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void OverlapsWedge_LineEdge_CrossWise_CircleInCircle_Almost_False()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(2, 2), 2), 190, 230);
+			Wedge b = new Wedge(new Circle(new Point(2.2, 2.3), 0.75), 260, 280);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
+			//assert
+			Assert.IsFalse(result);
+		}
+
+		[TestMethod]
+		public void OverlapsWedge_LineEdge_CrossWise_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(2, 2), 2), 190, 230);
+			Wedge b = new Wedge(new Circle(new Point(1, 2.3), 2), 265, 275);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void OverlapsWedge_ArcOverLineEdge_CircleInCircle_FromOutside_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), 100, 145);
+			Wedge b = new Wedge(new Circle(new Point(1.8, 3.3), 0.5), 10, 170);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void OverlapsWedge_ArcOverLineEdge_CircleInCircle_FromInside_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), 100, 145);
+			Wedge b = new Wedge(new Circle(new Point(2.1, 4.1), 0.5), 180, 300);
 			//account
 			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
 			//act
