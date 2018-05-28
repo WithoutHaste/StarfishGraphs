@@ -223,17 +223,24 @@ namespace StarfishGeometry.Shapes
 			if(perpendicularToCenter.Distance(Center) > Radius)
 				return null;
 
-			//line: y = mx + b
-			//circle: r^2 = x^2 + y^2
-			//circle: y = sqrt(r^2 + x^2)
-			//line: sqrt(r^2 + x^2) = mx + b
-			//line: r^2 + x^2 = (mx + b)^2 = m^2x^2 + 2mbx + b^2
-			//0 = (m^2 - 1)x^2 + 2mbx + (r^2 - b^2)
+			//equation of circle with radius r and center (h, k)
+			//is (x - h)^2 + (y - k)^2 = r^2
 
-			//quadratic equation: given 0 = ax^2 + bx + c, then x = (-b +- sqrt(b^2 - 4ac)) / 2a
-			//therefore x = (-2mb +- sqrt((2mb)^2 - 4(m^2 - 1)(r^2 - b^2)) / 2(m^2 - 1)
-			double x1 = (-2 * line.Slope * line.YIntercept + Math.Sqrt(Math.Pow(2 * line.Slope * line.YIntercept, 2) - 4 * (Math.Pow(line.Slope, 2) - 1) * (Math.Pow(Radius, 2) - Math.Pow(line.YIntercept, 2))) / (2 * (Math.Pow(line.Slope, 2) - 1)));
-			double x2 = (-2 * line.Slope * line.YIntercept - Math.Sqrt(Math.Pow(2 * line.Slope * line.YIntercept, 2) - 4 * (Math.Pow(line.Slope, 2) - 1) * (Math.Pow(Radius, 2) - Math.Pow(line.YIntercept, 2))) / (2 * (Math.Pow(line.Slope, 2) - 1)));
+			//line: y = mx + b
+			//circle: (x - h)^2 + (y - k)^2 = r^2
+			//substitute y: (x - h)^2 + (mx + b - k)^2 = r^2
+			//expand: x^2 - 2hx + h^2 + m^2x^2 + 2(b - k)mx + (b - k)^2 - r^2 = 0
+			//group: (1 + m^2)x^2 + (-2h + 2(b - k)m)x + (h^2 + (b - k)^2 - r^2) = 0
+			//quadratic equation: if 0 = Ax^2 + Bx + C, then x = (-B +- sqrt(B^2 - 4AC)) / 2A
+			double A = 1 + Math.Pow(line.Slope, 2);
+			double B = (-2 * Center.X) + (2 * (line.YIntercept - Center.Y) * line.Slope);
+			double C = Math.Pow(Center.X, 2) + Math.Pow(line.YIntercept - Center.Y, 2) - Math.Pow(Radius, 2);
+
+			double x1 = (-1*B + Math.Sqrt(Math.Pow(B, 2) - (4 * A * C))) / (2 * A);
+			double x2 = (-1*B - Math.Sqrt(Math.Pow(B, 2) - (4 * A * C))) / (2 * A);
+
+//			double x1 = (-2 * line.Slope * line.YIntercept + Math.Sqrt(Math.Pow(2 * line.Slope * line.YIntercept, 2) - 4 * (Math.Pow(line.Slope, 2) - 1) * (Math.Pow(Radius, 2) - Math.Pow(line.YIntercept, 2))) / (2 * (Math.Pow(line.Slope, 2) - 1)));
+//			double x2 = (-2 * line.Slope * line.YIntercept - Math.Sqrt(Math.Pow(2 * line.Slope * line.YIntercept, 2) - 4 * (Math.Pow(line.Slope, 2) - 1) * (Math.Pow(Radius, 2) - Math.Pow(line.YIntercept, 2))) / (2 * (Math.Pow(line.Slope, 2) - 1)));
 			double y1 = line.Slope * x1 + line.YIntercept;
 			double y2 = line.Slope * x2 + line.YIntercept;
 			Point point1 = new Point(x1, y1);

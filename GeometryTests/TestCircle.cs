@@ -8,7 +8,7 @@ namespace GeometryTests
 	public class TestCircle
 	{
 		[TestMethod]
-		public void GetIntersectioPointsCircle_NoIntersection_SameX()
+		public void GetIntersectionPointsCircle_NoIntersection_SameX()
 		{
 			//assign
 			Circle a = new Circle(new Point(-2, 0), 1);
@@ -20,7 +20,7 @@ namespace GeometryTests
 		}
 
 		[TestMethod]
-		public void GetIntersectioPointsCircle_SingleIntersection_SameX()
+		public void GetIntersectionPointsCircle_SingleIntersection_SameX()
 		{
 			//assign
 			Circle a = new Circle(new Point(-1, 0), 1);
@@ -33,7 +33,7 @@ namespace GeometryTests
 		}
 
 		[TestMethod]
-		public void GetIntersectioPointsCircle_SingleIntersection_SameX_DiffRadius()
+		public void GetIntersectionPointsCircle_SingleIntersection_SameX_DiffRadius()
 		{
 			//assign
 			Circle a = new Circle(new Point(-2, 0), 2);
@@ -46,7 +46,7 @@ namespace GeometryTests
 		}
 
 		[TestMethod]
-		public void GetIntersectioPointsCircle_DoubleIntersection_SameX()
+		public void GetIntersectionPointsCircle_DoubleIntersection_SameX()
 		{
 			//assign
 			Circle a = new Circle(new Point(-0.5, 0), 1);
@@ -59,6 +59,27 @@ namespace GeometryTests
 			Assert.AreEqual(2, result.Length);
 			Assert.AreEqual(new Point(0, -0.5 * Math.Sqrt(3)), minResult);
 			Assert.AreEqual(new Point(0, 0.5 * Math.Sqrt(3)), maxResult);
+		}
+
+		[TestMethod]
+		public void GetIntersectionPointsLineSegment_DoubleIntersection()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.01;
+			//(x - 2)^2 + (y + 3)^2 = 4 
+			Circle a = new Circle(new Point(2, -3), 2);
+			//2x + 2y = -1 
+			LineSegment c = new LineSegment(new Point(5, -11.0/2.0), new Point(0, -1.0/2.0));
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, c }, nameof(TestCircle));
+			//act
+			Point[] result = a.GetIntersectionPoints(c);
+			Point minResult = (result[0] < result[1]) ? result[0] : result[1];
+			Point maxResult = (minResult == result[0]) ? result[1] : result[0];
+			//assert
+			Assert.AreEqual(2, result.Length);
+			Assert.IsTrue(new Point(0.86, -1.36) == minResult);
+			Assert.IsTrue(new Point(3.64, -4.14) == maxResult);
 		}
 
 		//Resource: https://www.geogebra.org/m/qBfHYSTQ

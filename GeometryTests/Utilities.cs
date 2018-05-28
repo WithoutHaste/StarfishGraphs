@@ -22,7 +22,7 @@ namespace GeometryTests
 		{
 			double margin = 0.5 * UNITS_TO_PIXELS;
 			double width = shapes.Select(s => s.MaxX).Max() * UNITS_TO_PIXELS;
-			double height = shapes.Select(s => s.MaxY).Max() * UNITS_TO_PIXELS;
+			double height = Math.Abs(shapes.Select(s => s.MaxY).Max() * UNITS_TO_PIXELS);
 
 			Bitmap bitmap = new Bitmap((int)(width + margin), (int)(height + margin));
 			using(Graphics graphics = Graphics.FromImage(bitmap))
