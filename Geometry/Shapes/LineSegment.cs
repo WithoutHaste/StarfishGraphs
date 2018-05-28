@@ -44,6 +44,8 @@ namespace StarfishGeometry.Shapes
 
 		public double YIntercept { get { return A.Y - (Slope * A.X); } }
 
+		public bool IsVertical { get { return (A.X == B.X); } }
+
 		public Line GetLine()
 		{
 			return new Line(A, B, IsDirected);
@@ -51,8 +53,16 @@ namespace StarfishGeometry.Shapes
 
 		public bool Overlaps(Point c)
 		{
+			if(IsVertical)
+			{
+				return (Geometry.WithinMarginOfError(c.X, A.X));
+			}
+
 			if(!Geometry.WithinMarginOfError(c.Y, (Slope * c.X) + YIntercept))
+			{
 				return false;
+			}
+
 			return (c.X >= Math.Min(A.X, B.X) && c.X <= Math.Max(A.X, B.X) 
 				&& c.Y >= Math.Min(A.Y, B.Y) && c.Y <= Math.Max(A.Y, B.Y)); 
 		}
@@ -71,6 +81,14 @@ namespace StarfishGeometry.Shapes
 			}
 			//do lines intercept at a point?
 			double x = (b.YIntercept - a.YIntercept) / (a.Slope - b.Slope);
+			if(a.IsVertical)
+			{
+				x = a.A.X;
+			}
+			else if(b.IsVertical)
+			{
+				x = b.A.X;
+			}
 			double y = (a.Slope * x) + a.YIntercept;
 			Point interceptPoint = new Point(x, y);
 			return (a.Overlaps(interceptPoint) && b.Overlaps(interceptPoint));

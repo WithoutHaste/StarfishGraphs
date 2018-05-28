@@ -201,5 +201,101 @@ namespace GeometryTests
 			Assert.IsTrue(result);
 		}
 
+		[TestMethod]
+		public void OverlapsWedge_ArcOverLineEdge_FromOutside_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), 100, 145);
+			Wedge b = new Wedge(new Circle(new Point(5.5, 5), 3), 160, 230);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void OverlapsWedge_Center_CircleInCircle_Inside_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), 0, 45);
+			Wedge b = new Wedge(new Circle(new Point(3, 3), 1.5), 30, 35);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void OverlapsWedge_Center_CircleInCircle_Outside_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), 0, 45);
+			Wedge b = new Wedge(new Circle(new Point(3, 3), 3), 60, 90);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void OverlapsWedge_CenterToEdge_CircleInCircle_Outside_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), -45, 45);
+			LineSegment edgeA = a.LineEdges[1];
+			Point centerB = Geometry.PointOnLine(edgeA.A, edgeA.B, a.Circle.Radius * 0.25);
+			Wedge b = new Wedge(new Circle(centerB, 0.5), 90, 120);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void OverlapsWedge_CenterToEdge_CircleInCircle_Inside_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), -45, 45);
+			LineSegment edgeA = a.LineEdges[1];
+			Point centerB = Geometry.PointOnLine(edgeA.A, edgeA.B, a.Circle.Radius * 0.25);
+			Wedge b = new Wedge(new Circle(centerB, 0.5), 300, 330);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void OverlapsWedge_CenterToEdge_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), -45, 45);
+			LineSegment edgeA = a.LineEdges[1];
+			Point centerB = Geometry.PointOnLine(edgeA.A, edgeA.B, a.Circle.Radius * 0.25);
+			Wedge b = new Wedge(new Circle(centerB, 3), 90, 120);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
+			//assert
+			Assert.IsTrue(result);
+		}
+
 	}
 }

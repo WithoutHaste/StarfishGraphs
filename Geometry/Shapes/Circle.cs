@@ -238,9 +238,6 @@ namespace StarfishGeometry.Shapes
 
 			double x1 = (-1*B + Math.Sqrt(Math.Pow(B, 2) - (4 * A * C))) / (2 * A);
 			double x2 = (-1*B - Math.Sqrt(Math.Pow(B, 2) - (4 * A * C))) / (2 * A);
-
-//			double x1 = (-2 * line.Slope * line.YIntercept + Math.Sqrt(Math.Pow(2 * line.Slope * line.YIntercept, 2) - 4 * (Math.Pow(line.Slope, 2) - 1) * (Math.Pow(Radius, 2) - Math.Pow(line.YIntercept, 2))) / (2 * (Math.Pow(line.Slope, 2) - 1)));
-//			double x2 = (-2 * line.Slope * line.YIntercept - Math.Sqrt(Math.Pow(2 * line.Slope * line.YIntercept, 2) - 4 * (Math.Pow(line.Slope, 2) - 1) * (Math.Pow(Radius, 2) - Math.Pow(line.YIntercept, 2))) / (2 * (Math.Pow(line.Slope, 2) - 1)));
 			double y1 = line.Slope * x1 + line.YIntercept;
 			double y2 = line.Slope * x2 + line.YIntercept;
 			Point point1 = new Point(x1, y1);
