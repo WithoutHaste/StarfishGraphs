@@ -63,73 +63,81 @@ namespace NetworkGraphs
 			Bitmap bitmap = new Bitmap(3000, 2000);
 			List<int> parentIds = new List<int>();
 			Dictionary<int, WedgeNode> nodes = new Dictionary<int, WedgeNode>();
+
+			Shapes.Point center = new Shapes.Point(bitmap.Width / 2, bitmap.Height / 2);
+			nodes[startNodeId] = new WedgeNode()
+			{
+				Center = center,
+				Wedge = new Shapes.Wedge(new Shapes.Circle(center, nodeWidth / 2), 0, 360),
+				ChildrenWedge = new Shapes.WedgeUnbound(center, 0, 360)
+			};
+			parentIds.Add(startNodeId);
+
+			int parentIdsIndex = 0;
+			while(parentIdsIndex < parentIds.Count)
+			{
+				int parentId = parentIds[parentIdsIndex];
+				if(!data.ContainsKey(parentId))
+				{
+					parentIdsIndex++;
+					continue;
+				}
+				WedgeNode parentNode = nodes[parentId];
+
+				ChildCalculations calculations;
+				int childCount = data[parentId].Where(x => !nodes.ContainsKey(x)).Distinct().Count();
+				if(childCount == 0)
+				{
+					parentIdsIndex++;
+					continue;
+				}
+				if(childCount > 2 && parentNode.ParentNode != null)
+				{
+					//move node out from old parent to make room for new children
+					calculations = new ChildCalculations(childCount + 1, 360, nodeWidth);
+					Shapes.Point newCenter = Geometry.PointPastLine(parentNode.ParentNode.Center, parentNode.Center, calculations.Radius * 1.2);
+					parentNode.Center = newCenter;
+					double connectionToParentAtDegrees = Geometry.DegreesOfLine(newCenter, parentNode.ParentNode.Center, Geometry.CoordinatePlane.Screen);
+					parentNode.ChildrenWedge = new Shapes.WedgeUnbound(newCenter, connectionToParentAtDegrees + calculations.AngleUnit, 360 - calculations.AngleUnit);
+				}
+				else
+				{
+					calculations = new ChildCalculations(childCount, parentNode.ChildrenWedge.Span, nodeWidth);
+				}
+				while(DoesCollide(parentId, nodes, parentNode.Center, calculations.Radius))
+				{
+					//move node out from old parent to make room for new children
+					Shapes.Point newCenter = Geometry.PointPastLine(parentNode.ParentNode.Center, parentNode.Center, nodeWidth * 1.2);
+					parentNode.Center = newCenter;
+					parentNode.ChildrenWedgeCenter = newCenter;
+				}
+				double childAngle = parentNode.ChildrenWedge.Start;
+				Shapes.Point childCenter = parentNode.ChildrenWedge.Center;
+				foreach(int childId in data[parentId])
+				{
+					if(nodes.ContainsKey(childId))
+						continue;
+
+					Shapes.Point childPoint = new Shapes.Point(childCenter.X + (Math.Cos(Shapes.Circle.DegreesToRadians(childAngle)) * calculations.Radius), childCenter.Y + (Math.Sin(Shapes.Circle.DegreesToRadians(childAngle)) * calculations.Radius));
+					nodes[childId] = new WedgeNode()
+					{
+						Center = childPoint,
+						Wedge = new Shapes.Wedge(new Shapes.Circle(parentNode.Center, calculations.Radius), childAngle, childAngle + calculations.AngleUnit),
+						ParentNode = parentNode,
+						ChildrenWedge = new Shapes.WedgeUnbound(childCenter, Shapes.Range.Centered(childAngle, calculations.ChildAngleSpan))
+					};
+					parentIds.Add(childId);
+
+					childAngle += calculations.AngleUnit;
+				}
+
+				parentIdsIndex++;
+			}
+
 			using(Graphics graphics = Graphics.FromImage(bitmap))
 			{
 				graphics.SmoothingMode = SmoothingMode.AntiAlias;
 				graphics.Clear(Color.White);
-
-				Shapes.Point center = new Shapes.Point(bitmap.Width / 2, bitmap.Height / 2);
-				nodes[startNodeId] = new WedgeNode() {
-					Center = center,
-                    Wedge = new Shapes.Wedge(new Shapes.Circle(center, nodeWidth / 2), 0, 360),
-					ChildrenWedge = new Shapes.WedgeUnbound(center, 0, 360)
-				};
-				parentIds.Add(startNodeId);
-				
-				int parentIdsIndex = 0;
-				while(parentIdsIndex < parentIds.Count)
-				{
-					int parentId = parentIds[parentIdsIndex];
-					if(!data.ContainsKey(parentId))
-					{
-						parentIdsIndex++;
-						continue;
-					}
-					WedgeNode parentNode = nodes[parentId];
-
-					ChildCalculations calculations;
-					int childCount = data[parentId].Where(x => !nodes.ContainsKey(x)).Distinct().Count();
-					if(childCount > 2 && parentNode.ParentNode != null)
-					{
-						//move node out from old parent to make room for new children
-						calculations = new ChildCalculations(childCount + 1, 360, nodeWidth);
-						Shapes.Point newCenter = Geometry.PointPastLine(parentNode.ParentNode.Center, parentNode.Center, calculations.Radius * 1.2);
-						parentNode.Center = newCenter;
-						double connectionToParentAtDegrees = Geometry.DegreesOfLine(newCenter, parentNode.ParentNode.Center, Geometry.CoordinatePlane.Screen);
-						parentNode.ChildrenWedge = new Shapes.WedgeUnbound(newCenter, connectionToParentAtDegrees + calculations.AngleUnit, 360 - calculations.AngleUnit);
-					}
-					else
-					{
-						calculations = new ChildCalculations(childCount, parentNode.ChildrenWedge.Span, nodeWidth);
-					}
-					while(DoesCollide(parentId, nodes, parentNode.Center, calculations.Radius))
-					{
-						//move node out from old parent to make room for new children
-						Shapes.Point newCenter = Geometry.PointPastLine(parentNode.ParentNode.Center, parentNode.Center, nodeWidth * 1.2);
-						parentNode.Center = newCenter;
-						parentNode.ChildrenWedgeCenter = newCenter;
-					}
-					double childAngle = parentNode.ChildrenWedge.Start;
-					Shapes.Point childCenter = parentNode.ChildrenWedge.Center;
-					foreach(int childId in data[parentId])
-					{
-						if(nodes.ContainsKey(childId))
-							continue;
-
-						Shapes.Point childPoint = new Shapes.Point(childCenter.X + (Math.Cos(Shapes.Circle.DegreesToRadians(childAngle)) * calculations.Radius), childCenter.Y + (Math.Sin(Shapes.Circle.DegreesToRadians(childAngle)) * calculations.Radius));
-						nodes[childId] = new WedgeNode() {
-							Center = childPoint,
-		                    Wedge = new Shapes.Wedge(new Shapes.Circle(parentNode.Center, calculations.Radius), childAngle, childAngle + calculations.AngleUnit),
-							ParentNode = parentNode,
-							ChildrenWedge = new Shapes.WedgeUnbound(childCenter, Shapes.Range.Centered(childAngle, calculations.ChildAngleSpan))
-						};
-						parentIds.Add(childId);
-
-						childAngle += calculations.AngleUnit;
-					}
-
-					parentIdsIndex++;
-				}
 
 				//draw results
 				//lines
@@ -200,7 +208,7 @@ namespace NetworkGraphs
 
 		private bool DoesCollide(WedgeNode otherNode, Shapes.Point center, double radius)
 		{
-			return Geometry.WedgesOverlap(otherNode.Wedge, new Shapes.Wedge(new Shapes.Circle(center, radius), 0, 360));
+			return otherNode.Wedge.Overlaps(new Shapes.Wedge(new Shapes.Circle(center, radius), 0, 360));
 		}
 	}
 }
