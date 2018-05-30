@@ -81,5 +81,10 @@ namespace StarfishGeometry.Shapes
 		{
 			return new Line(a.A / b, a.B / b);
 		}
+
+		public override string ToString()
+		{
+			return String.Format("{0} to {1}", A, B);
+		}
 	}
 }

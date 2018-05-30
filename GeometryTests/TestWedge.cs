@@ -392,12 +392,26 @@ namespace GeometryTests
 		{
 			//assign
 			StarfishGeometry.Geometry.MarginOfError = 0.000001;
-			Circle a = new Circle(new Point(1342.5 / Utilities.UNITS_TO_PIXELS, 867.2 / Utilities.UNITS_TO_PIXELS), 187.338 / Utilities.UNITS_TO_PIXELS);
-			Wedge b = new Wedge(new Circle(new Point(1170.45 / Utilities.UNITS_TO_PIXELS, 1133.45 / Utilities.UNITS_TO_PIXELS), 225.53 / Utilities.UNITS_TO_PIXELS), 631, 648);
+			Circle a = new Circle(new Point(1342.5, 867.2), 187.338) / Utilities.UNITS_TO_PIXELS;
+			Wedge b = new Wedge(new Circle(new Point(1170.45, 1133.45), 225.53), 631, 648) / Utilities.UNITS_TO_PIXELS;
 			//account
 			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
 			//act
 			bool result = b.Overlaps(a);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void OverlapsCircle_Temp()
+		{
+			//assign
+			Wedge a = new Wedge(new Circle(new Point(550.83386399939, 0), 235.084533229311), 73.6363636363638, 90.0000000000002) / Utilities.UNITS_TO_PIXELS;
+			Circle b = new Circle(new Point(444.902178042324, 244.587042149464), 149.14086054459278) / Utilities.UNITS_TO_PIXELS;
+			//account
+//			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
 			//assert
 			Assert.IsTrue(result);
 		}

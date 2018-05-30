@@ -108,7 +108,7 @@ namespace StarfishGeometry.Shapes
 
 		public override string ToString()
 		{
-			return String.Format("{0}-{1}", A, B);
+			return String.Format("{0} to {1}", A, B);
 		}
 
 		public void Paint(Graphics graphics, Pen pen, double unitsToPixels)

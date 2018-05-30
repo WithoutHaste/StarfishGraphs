@@ -320,10 +320,6 @@ namespace StarfishGeometry.Shapes
 				y1 = line.A.Y;
 				y2 = line.A.Y;
 			}
-			if(Double.IsNaN(x1) || Double.IsNaN(x2) || Double.IsNaN(y1) || Double.IsNaN(y2))
-			{
-				var f = 0;
-			}
 			Point point1 = new Point(x1, y1);
 			Point point2 = new Point(x2, y2);
 			List<Point> result = new List<Point>() { point1 };

@@ -74,11 +74,10 @@ namespace NetworkGraphs
 
 		private Bitmap DrawGraph(Dictionary<int, List<int>> data, int startNodeId)
 		{
-			Bitmap bitmap = new Bitmap(3000, 2000);
 			List<int> parentIds = new List<int>();
 			Dictionary<int, WedgeNode> nodes = new Dictionary<int, WedgeNode>();
 
-			Shapes.Point center = new Shapes.Point(bitmap.Width / 2, bitmap.Height / 2);
+			Shapes.Point center = new Shapes.Point(1000, 1000);
 			nodes[startNodeId] = new WedgeNode()
 			{
 				Id = startNodeId,
@@ -171,6 +170,19 @@ namespace NetworkGraphs
 
 			//todo: check for lines very closely overlapping each other (see graph 1952, up to parentId 7)
 
+			//adjust graph location as close to origin as possible
+			int margin = 20;
+			int minX = (int)(nodes.Select(pair => pair.Value.Center.X).Min() - (nodeWidth / 2) - margin);
+			int minY = (int)(nodes.Select(pair => pair.Value.Center.Y).Min() - (nodeWidth / 2) - margin);
+			Shapes.Point minPoint = new Shapes.Point(minX, minY);
+			foreach(WedgeNode node in nodes.Values)
+			{
+				node.Center -= minPoint;
+			}
+			int maxX = (int)(nodes.Select(pair => pair.Value.Center.X).Max() + (nodeWidth / 2) + margin);
+			int maxY = (int)(nodes.Select(pair => pair.Value.Center.Y).Max() + (nodeWidth / 2) + margin);
+
+			Bitmap bitmap = new Bitmap(maxX, maxY);
 			using(Graphics graphics = Graphics.FromImage(bitmap))
 			{
 				graphics.SmoothingMode = SmoothingMode.AntiAlias;
@@ -253,7 +265,7 @@ namespace NetworkGraphs
 
 		private bool DoesCollide(WedgeNode otherNode, Shapes.Point center, double radius)
 		{
-			return otherNode.Wedge.Overlaps(new Shapes.Wedge(new Shapes.Circle(center, radius), 0, 360));
+			return otherNode.Wedge.Overlaps(new Shapes.Circle(center, radius));
 		}
 	}
 }
