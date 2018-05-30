@@ -214,6 +214,14 @@ namespace StarfishGeometry.Shapes
 			return Degrees.Overlaps(degrees);
 		}
 
+		/// <summary>
+		/// Scale wedge down by B amount. Affects length and location measures, but not degrees.
+		/// </summary>
+		public static Wedge operator /(Wedge a, double b)
+		{
+			return new Wedge(a.Circle / b, a.Degrees);
+		}
+
 		public void Paint(Graphics graphics, Pen pen, double unitsToPixels)
 		{
 			graphics.DrawArc(pen, 

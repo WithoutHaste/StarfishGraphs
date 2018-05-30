@@ -24,8 +24,8 @@ namespace StarfishGeometry.Shapes
 		public double Slope { get { return ((B.Y - A.Y) / (B.X - A.X)); } }
 		public double PerpendicularSlope { get { return -1 * (1 / Slope); } }
 		public double YIntercept { get { return A.Y - (Slope * A.X); } }
-		public bool IsVertical { get { return (A.Y == B.Y); } }
-		public bool IsHorizontal { get { return (A.X == B.X); } }
+		public bool IsVertical { get { return (A.X == B.X); } }
+		public bool IsHorizontal { get { return (A.Y == B.Y); } }
 
 		//todo: subclass exceptions to be explicit
 
@@ -61,17 +61,25 @@ namespace StarfishGeometry.Shapes
 		{
 			if(IsVertical)
 			{
-				return new Point(c.X, this.A.Y);
+				return new Point(this.A.X, c.Y);
 			}
 			if(IsHorizontal)
 			{
-				return new Point(this.A.X, c.Y);
+				return new Point(c.X, this.A.Y);
 			}
 			double cSlope = PerpendicularSlope;
 			double cYIntercept = c.Y - (cSlope * c.X);
 			double x = (cYIntercept - this.YIntercept) / (this.Slope - cSlope);
 			double y = (this.Slope * x) + this.YIntercept;
 			return new Point(x, y);
+		}
+
+		/// <summary>
+		/// Scale line down by B amount. Affects length and location measures.
+		/// </summary>
+		public static Line operator /(Line a, double b)
+		{
+			return new Line(a.A / b, a.B / b);
 		}
 	}
 }

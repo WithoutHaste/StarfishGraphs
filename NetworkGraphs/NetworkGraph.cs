@@ -35,6 +35,13 @@ namespace NetworkGraphs
 			data = LoadData_Lia(dataFilename);
 			graph = DrawGraph(data, 1952);
 			graph.Save(saveAsFilename, ImageFormat.Png);
+
+			dataFilename = "../../../data/2018May_Lia_starting_point_1952.csv";
+			saveAsFilename = "auto_starting_point_1952_mostconnectedfirst.png";
+			data = LoadData_Lia(dataFilename);
+			int mostConnectedId = data.OrderByDescending(pair => pair.Value.Distinct().Count()).First().Key;
+			graph = DrawGraph(data, mostConnectedId);
+			graph.Save(saveAsFilename, ImageFormat.Png);
 		}
 
 		private Dictionary<int, List<int>> LoadData_Lia(string filename)
@@ -196,11 +203,13 @@ namespace NetworkGraphs
 					DrawNode(graphics, nodes[id].Center, ShortLabel(id));
 				}
 				//debugging: wedges
+				/*
 				Pen redPen = new Pen(Color.Red, 1);
 				foreach(int id in nodes.Keys)
 				{
 					nodes[id].Wedge.Paint(graphics, redPen, 1);
 				}
+				*/
 			}
 			return bitmap;
 		}

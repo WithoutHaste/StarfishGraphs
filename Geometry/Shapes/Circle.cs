@@ -307,6 +307,23 @@ namespace StarfishGeometry.Shapes
 			double x2 = (-1*B - Math.Sqrt(Math.Pow(B, 2) - (4 * A * C))) / (2 * A);
 			double y1 = line.Slope * x1 + line.YIntercept;
 			double y2 = line.Slope * x2 + line.YIntercept;
+			if(line.IsVertical)
+			{
+				x1 = line.A.X;
+				x2 = line.A.X;
+				//must use circle equation instead of line equation to find y's
+				y1 = Center.Y + Math.Sqrt(Math.Pow(Radius, 2) - Math.Pow(x1 - Center.X, 2));
+				y2 = Center.Y - Math.Sqrt(Math.Pow(Radius, 2) - Math.Pow(x1 - Center.X, 2));
+			}
+			if(line.IsHorizontal)
+			{
+				y1 = line.A.Y;
+				y2 = line.A.Y;
+			}
+			if(Double.IsNaN(x1) || Double.IsNaN(x2) || Double.IsNaN(y1) || Double.IsNaN(y2))
+			{
+				var f = 0;
+			}
 			Point point1 = new Point(x1, y1);
 			Point point2 = new Point(x2, y2);
 			List<Point> result = new List<Point>() { point1 };
@@ -339,6 +356,14 @@ namespace StarfishGeometry.Shapes
 		public static double RadiansToDegrees(double radians)
 		{
 			return radians * 180 / Math.PI;
+		}
+
+		/// <summary>
+		/// Scale circle down by B amount. Affects length and location measures.
+		/// </summary>
+		public static Circle operator /(Circle a, double b)
+		{
+			return new Circle(a.Center / b, a.Radius / b);
 		}
 
 		public static bool operator ==(Circle a, Circle b)

@@ -46,6 +46,8 @@ namespace StarfishGeometry.Shapes
 
 		public bool IsVertical { get { return (A.X == B.X); } }
 
+		public bool IsHorizontal { get { return (A.Y == B.Y); } }
+
 		public double Length { get { return A.Distance(B); } }
 
 		public Line GetLine()
@@ -92,6 +94,14 @@ namespace StarfishGeometry.Shapes
 				x = b.A.X;
 			}
 			double y = (a.Slope * x) + a.YIntercept;
+			if(a.IsHorizontal)
+			{
+				y = a.A.Y;
+			}
+			else if(b.IsHorizontal)
+			{
+				y = b.A.Y;
+			}
 			Point interceptPoint = new Point(x, y);
 			return (a.Overlaps(interceptPoint) && b.Overlaps(interceptPoint));
 		}

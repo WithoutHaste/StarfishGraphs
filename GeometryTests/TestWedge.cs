@@ -373,12 +373,12 @@ namespace GeometryTests
 		}
 
 		[TestMethod]
-		public void OverlapsWedge_OneIsFullCircle_True()
+		public void OverlapsWedge_OneIsFullCircle_A_True()
 		{
 			//assign
 			StarfishGeometry.Geometry.MarginOfError = 0.000001;
-			Wedge a = new Wedge(new Circle(new Point(1342.5 / Utilities.UNITS_TO_PIXELS, 867.2 / Utilities.UNITS_TO_PIXELS), 187.338 / Utilities.UNITS_TO_PIXELS), 0, 360);
-			Wedge b = new Wedge(new Circle(new Point(1170.45 / Utilities.UNITS_TO_PIXELS, 1133.45 / Utilities.UNITS_TO_PIXELS), 225.53 / Utilities.UNITS_TO_PIXELS), 631, 648);
+			Wedge a = new Wedge(new Circle(new Point(1342.5, 867.2), 187.338), 0, 360) / Utilities.UNITS_TO_PIXELS;
+			Wedge b = new Wedge(new Circle(new Point(1170.45, 1133.45), 225.53), 631, 648) / Utilities.UNITS_TO_PIXELS;
 			//account
 			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
 			//act
