@@ -373,6 +373,36 @@ namespace GeometryTests
 		}
 
 		[TestMethod]
+		public void OverlapsWedge_OneIsFullCircle_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Wedge a = new Wedge(new Circle(new Point(1342.5 / Utilities.UNITS_TO_PIXELS, 867.2 / Utilities.UNITS_TO_PIXELS), 187.338 / Utilities.UNITS_TO_PIXELS), 0, 360);
+			Wedge b = new Wedge(new Circle(new Point(1170.45 / Utilities.UNITS_TO_PIXELS, 1133.45 / Utilities.UNITS_TO_PIXELS), 225.53 / Utilities.UNITS_TO_PIXELS), 648, 631);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = a.Overlaps(b);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void OverlapsCircle_A_True()
+		{
+			//assign
+			StarfishGeometry.Geometry.MarginOfError = 0.000001;
+			Circle a = new Circle(new Point(1342.5 / Utilities.UNITS_TO_PIXELS, 867.2 / Utilities.UNITS_TO_PIXELS), 187.338 / Utilities.UNITS_TO_PIXELS);
+			Wedge b = new Wedge(new Circle(new Point(1170.45 / Utilities.UNITS_TO_PIXELS, 1133.45 / Utilities.UNITS_TO_PIXELS), 225.53 / Utilities.UNITS_TO_PIXELS), 648, 631);
+			//account
+			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
+			//act
+			bool result = b.Overlaps(a);
+			//assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
 		public void DegreesContains_RangeCrosses360_Below360_True()
 		{
 			//assign

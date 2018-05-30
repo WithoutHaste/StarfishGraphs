@@ -46,6 +46,8 @@ namespace StarfishGeometry.Shapes
 
 		public bool IsVertical { get { return (A.X == B.X); } }
 
+		public double Length { get { return A.Distance(B); } }
+
 		public Line GetLine()
 		{
 			return new Line(A, B, IsDirected);

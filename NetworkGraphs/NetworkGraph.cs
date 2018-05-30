@@ -76,6 +76,8 @@ namespace NetworkGraphs
 			int parentIdsIndex = 0;
 			while(parentIdsIndex < parentIds.Count)
 			{
+//				if(parentIdsIndex > 9)
+//					break;
 				int parentId = parentIds[parentIdsIndex];
 				if(!data.ContainsKey(parentId))
 				{
@@ -104,7 +106,11 @@ namespace NetworkGraphs
 				{
 					calculations = new ChildCalculations(childCount, parentNode.ChildrenWedge.Span, nodeWidth);
 				}
-				while(DoesCollide(parentId, nodes, parentNode.Center, calculations.Radius))
+				if(parentId == 1953)
+				{
+					var x = 1;
+				}
+				while(DoesCollide(parentId, nodes, parentNode.Center, calculations.Radius + (nodeWidth / 2)))
 				{
 					//move node out from old parent to make room for new children
 					Shapes.Point newCenter = Geometry.PointPastLine(parentNode.ParentNode.Center, parentNode.Center, nodeWidth * 1.2);
@@ -122,7 +128,7 @@ namespace NetworkGraphs
 					nodes[childId] = new WedgeNode()
 					{
 						Center = childPoint,
-						Wedge = new Shapes.Wedge(new Shapes.Circle(parentNode.Center, calculations.Radius), childAngle, childAngle + calculations.AngleUnit),
+						Wedge = new Shapes.Wedge(new Shapes.Circle(parentNode.Center, calculations.Radius + (nodeWidth / 2)), childAngle, childAngle + calculations.AngleUnit),
 						ParentNode = parentNode,
 						ChildrenWedge = new Shapes.WedgeUnbound(childCenter, Shapes.Range.Centered(childAngle, calculations.ChildAngleSpan))
 					};
@@ -133,6 +139,8 @@ namespace NetworkGraphs
 
 				parentIdsIndex++;
 			}
+
+			//todo: check for lines very closely overlapping each other (see graph 1952, up to parentId 7)
 
 			using(Graphics graphics = Graphics.FromImage(bitmap))
 			{
@@ -165,6 +173,14 @@ namespace NetworkGraphs
 				{
 					DrawNode(graphics, nodes[id].Center, ShortLabel(id));
 				}
+				//debugging: wedges
+				/*
+				Pen redPen = new Pen(Color.Red, 1);
+				foreach(int id in nodes.Keys)
+				{
+					nodes[id].Wedge.Paint(graphics, redPen, 1);
+				}
+				*/
 			}
 			return bitmap;
 		}

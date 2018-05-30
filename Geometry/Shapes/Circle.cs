@@ -117,6 +117,21 @@ namespace StarfishGeometry.Shapes
 		}
 
 		/// <summary>
+		/// Find the two tangent points on the circle that form lines to point B.
+		/// </summary>
+		public Point[] GetTangentPoints(Point b)
+		{
+			//point C and D are the tangents
+			Circle a = this;
+			double distanceAB = a.Center.Distance(b);
+			double degreesAB = DegreesAtPoint(b);
+			double degreesAB_AC = Math.Cos(Radius / distanceAB);
+			Point c = PointAtDegrees(degreesAB + degreesAB_AC);
+			Point d = PointAtDegrees(degreesAB - degreesAB_AC);
+			return new Point[] { c, d };
+		}
+
+		/// <summary>
 		/// Any part of this circle overlaps any part of circle B.
 		/// </summary>
 		public bool Overlaps(Circle b)
@@ -125,6 +140,30 @@ namespace StarfishGeometry.Shapes
 			if(intersections != null)
 				return true;
 			return this.ContainsOrIsContained(b);
+		}
+
+		/// <summary>
+		/// Any part of this circle overlaps any part of line segment B.
+		/// If line B lies within the circle, that counts as overlapping.
+		/// </summary>
+		public bool Overlaps(LineSegment b)
+		{
+			Point[] lineIntersectionPoints = GetIntersectionPoints(b.GetLine());
+			if(lineIntersectionPoints == null)
+				return false;
+			foreach(Point point in lineIntersectionPoints)
+			{
+				if(b.Overlaps(point))
+					return true;
+			}
+			if(lineIntersectionPoints.Length == 2)
+			{
+				//if b lies entirely within the circle
+				LineSegment intersectionLine = new LineSegment(lineIntersectionPoints[0], lineIntersectionPoints[1]);
+				if(intersectionLine.Length > b.Length && intersectionLine.Overlaps(b))
+					return true;
+			}
+			return false;
 		}
 
 		/// <summary>
@@ -148,6 +187,29 @@ namespace StarfishGeometry.Shapes
 				return (b.Center == this.Center);
 			double d = this.Center.Distance(b.Center);
 			return (this.Radius >= d + b.Radius);
+		}
+
+		/// <summary>
+		/// This circle entirely contains wedge B.
+		/// </summary>
+		public bool Contains(Wedge b)
+		{
+			foreach(Point point in b.FourPoints)
+			{
+				if(!Contains(point))
+					return false;
+			}
+			return true;
+		}
+
+		//todo: should be checking margin of error on all equalities, like Contains Point
+
+		/// <summary>
+		/// Point B lies within or on this circle.
+		/// </summary>
+		public bool Contains(Point b)
+		{
+			return (Center.Distance(b) <= Radius);
 		}
 
 		/// <summary>
@@ -211,15 +273,20 @@ namespace StarfishGeometry.Shapes
 			return PointAtRadians(DegreesToRadians(degrees));
 		}
 
+		public double DegreesAtPoint(Point b)
+		{
+			return Geometry.DegreesOfLine(Center, b, CoordinatePlane);
+		}
+
 		/// <summary>
 		/// Returns null (no intercepts), or array of length 1 or 2.
 		/// </summary>
 		/// <param name="line"></param>
 		/// <returns></returns>
-		public Point[] GetIntersectionPoints(LineSegment line)
+		public Point[] GetIntersectionPoints(Line line)
 		{
 			//line does not intersect if perpendicular line from circle-center to line is longer than circle-radius
-			Point perpendicularToCenter = line.GetLine().GetPerpendicularIntersect(Center);
+			Point perpendicularToCenter = line.GetPerpendicularIntersect(Center);
 			if(perpendicularToCenter.Distance(Center) > Radius)
 				return null;
 
@@ -242,14 +309,26 @@ namespace StarfishGeometry.Shapes
 			double y2 = line.Slope * x2 + line.YIntercept;
 			Point point1 = new Point(x1, y1);
 			Point point2 = new Point(x2, y2);
-			List<Point> result = new List<Point>();
-			if(line.Overlaps(point1))
-				result.Add(point1);
-			if(line.Overlaps(point2) && point1 != point2)
+			List<Point> result = new List<Point>() { point1 };
+			if(point1 != point2)
 				result.Add(point2);
-			if(result.Count == 0)
-				return null;
 			return result.ToArray();
+		}
+
+		public Point[] GetIntersectionPoints(LineSegment lineSegment)
+		{
+			Point[] lineIntersectionPoints = GetIntersectionPoints(lineSegment.GetLine());
+			if(lineIntersectionPoints == null)
+				return null;
+			List<Point> segmentIntersectionPoints = new List<Point>();
+			foreach(Point point in lineIntersectionPoints)
+			{
+				if(lineSegment.Overlaps(point))
+					segmentIntersectionPoints.Add(point);
+			}
+			if(segmentIntersectionPoints.Count == 0)
+				return null;
+			return segmentIntersectionPoints.ToArray();
 		}
 
 		public static double DegreesToRadians(double degrees)

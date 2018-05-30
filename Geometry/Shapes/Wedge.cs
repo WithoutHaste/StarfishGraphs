@@ -20,6 +20,11 @@ namespace StarfishGeometry.Shapes
 
 		public Point StartPoint { get { return Circle.PointAtDegrees(Degrees.Start); } }
 		public Point EndPoint { get { return Circle.PointAtDegrees(Degrees.End); } }
+		/// <summary>
+		/// The point at the center of the arc, furthest from the center.
+		/// </summary>
+		public Point ArcPoint { get { return Circle.PointAtDegrees(Degrees.Middle); } }
+		public Point[] FourPoints { get { return new Point[] { Circle.Center, StartPoint, EndPoint, ArcPoint }; } }
 		public LineSegment[] LineEdges { get { return new LineSegment[] { new LineSegment(Circle.Center, StartPoint), new LineSegment(Circle.Center, EndPoint) }; } }
 		public double MaxX {
 			get {
@@ -52,6 +57,39 @@ namespace StarfishGeometry.Shapes
 		{
 			Circle = c;
 			Degrees = new Range(rangeStart, rangeEnd);
+		}
+
+		/// <summary>
+		/// Any part of this wedge overlaps any part of circle B.
+		/// </summary>
+		public bool Overlaps(Circle b)
+		{
+			Wedge a = this;
+			Point[] intersections = a.Circle.GetIntersectionPoints(b);
+			if(intersections == null)
+			{
+				if(!a.Circle.ContainsOrIsContained(b))
+				{
+					return false;
+				}
+			}
+
+			//line edge overlaps circle
+			foreach(LineSegment lineA in this.LineEdges)
+			{
+				if(b.Overlaps(lineA))
+					return true;
+			}
+			//arc overlaps circle
+			if(a.ArcOverlapsArc(new Wedge(b, 0, 360)))
+				return true;
+			//wedge entirely contains circle or circle entirely contains wedge
+			if(a.Contains(b))
+				return true;
+			if(b.Contains(a))
+				return true;
+
+			return false;
 		}
 
 		/// <summary>
@@ -151,6 +189,20 @@ namespace StarfishGeometry.Shapes
 		}
 
 		/// <summary>
+		/// Circle B lies entirely within this wedge.
+		/// </summary>
+		public bool Contains(Circle b)
+		{
+			Point[] tangentPoints = b.GetTangentPoints(this.Circle.Center);
+			foreach(Point point in tangentPoints)
+			{
+				if(!Contains(point))
+					return false;
+			}
+			return true;
+		}
+
+		/// <summary>
 		/// This wedge contains point B, including point B being on an edge of the wedge.
 		/// </summary>
 		public bool Contains(Point b)
@@ -167,6 +219,10 @@ namespace StarfishGeometry.Shapes
 			degree = Range.Mod(degree, 360);
 			double start = Range.Mod(Degrees.Start, 360);
 			double end = Range.Mod(Degrees.End, 360);
+			if(start == end)
+			{
+				return true;
+			}
 			if(start <= end)
 			{
 				return (start <= degree && end >= degree);
@@ -195,6 +251,11 @@ namespace StarfishGeometry.Shapes
 				(float)(EndPoint.X * unitsToPixels),
 				(float)(EndPoint.Y * unitsToPixels)
 			);
+		}
+
+		public override string ToString()
+		{
+			return String.Format("{0} Degrees:{1}", Circle, Degrees);
 		}
 	}
 }

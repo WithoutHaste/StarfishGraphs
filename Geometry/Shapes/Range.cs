@@ -16,6 +16,7 @@ namespace StarfishGeometry.Shapes
 		public readonly double End;
 
 		public double Span { get { return End - Start; } }
+		public double Middle { get { return Start + ((End - Start) / 2); } }
 
 		public Range(double s, double e)
 		{
@@ -38,6 +39,11 @@ namespace StarfishGeometry.Shapes
 			while(number < 0)
 				number += m;
 			return number % m;
+		}
+
+		public override string ToString()
+		{
+			return String.Format("{0}-{1}", Start, End);
 		}
 	}
 }
