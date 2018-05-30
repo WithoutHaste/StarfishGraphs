@@ -18,6 +18,10 @@ namespace StarfishGeometry.Shapes
 
 		public Point(double x, double y)
 		{
+			if(double.IsNaN(x))
+				throw new Exception("Point.X cannot be NaN.");
+			if(double.IsNaN(y))
+				throw new Exception("Point.Y cannot be NaN.");
 			X = x;
 			Y = y;
 		}

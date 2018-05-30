@@ -22,12 +22,17 @@ namespace NetworkGraphs
 		/// </summary>
 		public ChildCalculations(int childCount, double angleSpan, double nodeWidth)
 		{
+			if(angleSpan <= 0)
+				throw new Exception("AngleSpan must be greater than 0.");
+
 			angleUnit = angleSpan / childCount;
 
 			arcLength = (childCount * nodeWidth) * 1.2F;
 
 			radius = (arcLength / (2 * Math.PI)) * (360 / angleSpan);
 			radius = Math.Max(nodeWidth * 2, radius);
+			if(double.IsInfinity(radius))
+				throw new Exception("Radius cannot be infinity.");
 
 			childAngleSpan = (nodeWidth / (2 * Math.PI * radius)) * 360;
 		}

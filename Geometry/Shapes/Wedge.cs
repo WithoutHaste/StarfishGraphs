@@ -16,7 +16,7 @@ namespace StarfishGeometry.Shapes
 		/// <summary>
 		/// 0 degrees is East of center, increases clockwise.
 		/// </summary>
-		public readonly Range Degrees;
+		public readonly RangeCircular Degrees;
 
 		public Point StartPoint { get { return Circle.PointAtDegrees(Degrees.Start); } }
 		public Point EndPoint { get { return Circle.PointAtDegrees(Degrees.End); } }
@@ -29,7 +29,7 @@ namespace StarfishGeometry.Shapes
 		public double MaxX {
 			get {
 				double maxX = Math.Max(StartPoint.X, EndPoint.X);
-				if(DegreesContains(Circle.MaxXDegrees))
+				if(Degrees.Overlaps(Circle.MaxXDegrees))
 					maxX = Math.Max(maxX, Circle.Center.X + Circle.Radius);
 				else
 					maxX = Math.Max(maxX, Circle.Center.X);
@@ -39,7 +39,7 @@ namespace StarfishGeometry.Shapes
 		public double MaxY {
 			get {
 				double maxY = Math.Max(StartPoint.Y, EndPoint.Y);
-				if(DegreesContains(Circle.MaxYDegrees))
+				if(Degrees.Overlaps(Circle.MaxYDegrees))
 					maxY = Math.Max(maxY, Circle.Center.Y + Circle.Radius);
 				else
 					maxY = Math.Max(maxY, Circle.Center.Y);
@@ -47,7 +47,7 @@ namespace StarfishGeometry.Shapes
 			}
 		}
 
-		public Wedge(Circle c, Range r)
+		public Wedge(Circle c, RangeCircular r)
 		{
 			Circle = c;
 			Degrees = r;
@@ -56,7 +56,7 @@ namespace StarfishGeometry.Shapes
 		public Wedge(Circle c, double rangeStart, double rangeEnd)
 		{
 			Circle = c;
-			Degrees = new Range(rangeStart, rangeEnd);
+			Degrees = new RangeCircular(rangeStart, rangeEnd, 360);
 		}
 
 		/// <summary>
@@ -158,7 +158,7 @@ namespace StarfishGeometry.Shapes
 			foreach(Point point in fullCircleIntersections)
 			{
 				double degrees = Geometry.DegreesOfLine(Circle.Center, point, Circle.CoordinatePlane);
-				if(DegreesContains(degrees))
+				if(Degrees.Overlaps(degrees))
 				{
 					return true;
 				}
@@ -177,9 +177,9 @@ namespace StarfishGeometry.Shapes
 				return false;
 			foreach(Point point in fullCircleIntersections)
 			{
-				if(a.Circle.Center == point || a.DegreesContains(Geometry.DegreesOfLine(a.Circle.Center, point, a.Circle.CoordinatePlane)))
+				if(a.Circle.Center == point || a.Degrees.Overlaps(Geometry.DegreesOfLine(a.Circle.Center, point, a.Circle.CoordinatePlane)))
 				{
-					if(b.Circle.Center == point || b.DegreesContains(Geometry.DegreesOfLine(b.Circle.Center, point, b.Circle.CoordinatePlane)))
+					if(b.Circle.Center == point || b.Degrees.Overlaps(Geometry.DegreesOfLine(b.Circle.Center, point, b.Circle.CoordinatePlane)))
 					{
 						return true;
 					}
@@ -211,23 +211,7 @@ namespace StarfishGeometry.Shapes
 			if(distance > Circle.Radius)
 				return false;
 			double degrees = Geometry.DegreesOfLine(Circle.Center, b, Circle.CoordinatePlane);
-			return DegreesContains(degrees);
-		}
-
-		public bool DegreesContains(double degree)
-		{
-			degree = Range.Mod(degree, 360);
-			double start = Range.Mod(Degrees.Start, 360);
-			double end = Range.Mod(Degrees.End, 360);
-			if(start == end)
-			{
-				return true;
-			}
-			if(start <= end)
-			{
-				return (start <= degree && end >= degree);
-			}
-			return ((start <= degree && degree <= 360) || (0 <= degree && end >= degree));
+			return Degrees.Overlaps(degrees);
 		}
 
 		public void Paint(Graphics graphics, Pen pen, double unitsToPixels)

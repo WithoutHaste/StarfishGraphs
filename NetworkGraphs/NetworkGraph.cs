@@ -58,6 +58,13 @@ namespace NetworkGraphs
 			return data;
 		}
 
+		private int CountChildrenNotPlaced(int parentId, Dictionary<int, List<int>> data, Dictionary<int, WedgeNode> nodes)
+		{
+			if(!data.ContainsKey(parentId))
+				return 0;
+			return data[parentId].Where(x => !nodes.ContainsKey(x)).Distinct().Count();
+		}
+
 		private Bitmap DrawGraph(Dictionary<int, List<int>> data, int startNodeId)
 		{
 			Bitmap bitmap = new Bitmap(3000, 2000);
@@ -67,6 +74,7 @@ namespace NetworkGraphs
 			Shapes.Point center = new Shapes.Point(bitmap.Width / 2, bitmap.Height / 2);
 			nodes[startNodeId] = new WedgeNode()
 			{
+				Id = startNodeId,
 				Center = center,
 				Wedge = new Shapes.Wedge(new Shapes.Circle(center, nodeWidth / 2), 0, 360),
 				ChildrenWedge = new Shapes.WedgeUnbound(center, 0, 360)
@@ -86,8 +94,18 @@ namespace NetworkGraphs
 				}
 				WedgeNode parentNode = nodes[parentId];
 
+				//if a sibling does not have any unplaced children, this node can take up the sibling's childrenwedge space
+				if(parentNode.SiblingClockwise != null && CountChildrenNotPlaced(parentNode.SiblingClockwise.Id, data, nodes) == 0)
+				{
+					parentNode.ChildrenWedgeDegrees += parentNode.SiblingClockwise.ChildrenWedgeDegrees;
+				}
+				if(parentNode.SiblingCounterClockwise != null && CountChildrenNotPlaced(parentNode.SiblingCounterClockwise.Id, data, nodes) == 0)
+				{
+					parentNode.ChildrenWedgeDegrees += parentNode.SiblingCounterClockwise.ChildrenWedgeDegrees;
+				}
+
 				ChildCalculations calculations;
-				int childCount = data[parentId].Where(x => !nodes.ContainsKey(x)).Distinct().Count();
+				int childCount = CountChildrenNotPlaced(parentId, data, nodes);
 				if(childCount == 0)
 				{
 					parentIdsIndex++;
@@ -106,10 +124,6 @@ namespace NetworkGraphs
 				{
 					calculations = new ChildCalculations(childCount, parentNode.ChildrenWedge.Span, nodeWidth);
 				}
-				if(parentId == 1953)
-				{
-					var x = 1;
-				}
 				while(DoesCollide(parentId, nodes, parentNode.Center, calculations.Radius + (nodeWidth / 2)))
 				{
 					//move node out from old parent to make room for new children
@@ -119,19 +133,27 @@ namespace NetworkGraphs
 				}
 				double childAngle = parentNode.ChildrenWedge.Start;
 				Shapes.Point childCenter = parentNode.ChildrenWedge.Center;
+				WedgeNode siblingCounterClockwise = null;
 				foreach(int childId in data[parentId])
 				{
 					if(nodes.ContainsKey(childId))
 						continue;
 
+					//todo: if the sibling nodes next to you have no children, you can take up a wider space with your children
+
 					Shapes.Point childPoint = new Shapes.Point(childCenter.X + (Math.Cos(Shapes.Circle.DegreesToRadians(childAngle)) * calculations.Radius), childCenter.Y + (Math.Sin(Shapes.Circle.DegreesToRadians(childAngle)) * calculations.Radius));
 					nodes[childId] = new WedgeNode()
 					{
+						Id = childId,
 						Center = childPoint,
-						Wedge = new Shapes.Wedge(new Shapes.Circle(parentNode.Center, calculations.Radius + (nodeWidth / 2)), childAngle, childAngle + calculations.AngleUnit),
+						Wedge = new Shapes.Wedge(new Shapes.Circle(parentNode.Center, calculations.Radius + (nodeWidth / 2)), childAngle - (0.5 * calculations.AngleUnit), childAngle + (0.5 * calculations.AngleUnit)),
 						ParentNode = parentNode,
-						ChildrenWedge = new Shapes.WedgeUnbound(childCenter, Shapes.Range.Centered(childAngle, calculations.ChildAngleSpan))
+						ChildrenWedge = new Shapes.WedgeUnbound(childCenter, Shapes.RangeCircular.Centered(childAngle, calculations.ChildAngleSpan, 360)),
+						SiblingCounterClockwise = siblingCounterClockwise
 					};
+					if(siblingCounterClockwise != null)
+						siblingCounterClockwise.SiblingClockwise = nodes[childId];
+					siblingCounterClockwise = nodes[childId];
 					parentIds.Add(childId);
 
 					childAngle += calculations.AngleUnit;
@@ -174,13 +196,11 @@ namespace NetworkGraphs
 					DrawNode(graphics, nodes[id].Center, ShortLabel(id));
 				}
 				//debugging: wedges
-				/*
 				Pen redPen = new Pen(Color.Red, 1);
 				foreach(int id in nodes.Keys)
 				{
 					nodes[id].Wedge.Paint(graphics, redPen, 1);
 				}
-				*/
 			}
 			return bitmap;
 		}

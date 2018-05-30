@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//todo: Wedge and WedgeUnbound should have some parent/child relationship
+
 namespace StarfishGeometry.Shapes
 {
 	/// <summary>
@@ -13,13 +15,13 @@ namespace StarfishGeometry.Shapes
 	public class WedgeUnbound : Shape
 	{
 		public readonly Point Center;
-		public readonly Range Degrees;
+		public readonly RangeCircular Degrees;
 
 		public double Span { get { return Degrees.Span; } }
 		public double Start { get { return Degrees.Start; } }
 		public double End { get { return Degrees.End; } }
 
-		public WedgeUnbound(Point c, Range r)
+		public WedgeUnbound(Point c, RangeCircular r)
 		{
 			Center = c;
 			Degrees = r;
@@ -28,7 +30,7 @@ namespace StarfishGeometry.Shapes
 		public WedgeUnbound(Point c, double rangeStart, double rangeEnd)
 		{
 			Center = c;
-			Degrees = new Range(rangeStart, rangeEnd);
+			Degrees = new RangeCircular(rangeStart, rangeEnd, 360);
 		}
 	}
 }

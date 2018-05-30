@@ -15,8 +15,8 @@ namespace StarfishGeometry.Shapes
 		public readonly double Start;
 		public readonly double End;
 
-		public double Span { get { return End - Start; } }
-		public double Middle { get { return Start + ((End - Start) / 2); } }
+		public virtual double Span { get { return End - Start; } }
+		public virtual double Middle { get { return Start + ((End - Start) / 2); } }
 
 		public Range(double s, double e)
 		{
@@ -29,21 +29,27 @@ namespace StarfishGeometry.Shapes
 			return new Range(center - (span / 2), center + (span / 2));
 		}
 
-		/// <summary>
-		/// Returns number modulus m. Ensures a positive result.
-		/// </summary>
-		public static double Mod(double number, int m)
+		public virtual bool Overlaps(Range b)
 		{
-			if(m <= 0)
-				throw new Exception("Requires a positive, non-zero m.");
-			while(number < 0)
-				number += m;
-			return number % m;
+			return (this.Overlaps(b.Start) || this.Overlaps(b.End) || b.Overlaps(this.Start) || b.Overlaps(this.End));
+		}
+
+		public virtual bool Overlaps(double b)
+		{
+			return (Start <= b && End >= b);
 		}
 
 		public override string ToString()
 		{
 			return String.Format("{0}-{1}", Start, End);
+		}
+
+		/// <summary>
+		/// Returns a range that covers all the area both A and B cover, including any gap in between.
+		/// </summary>
+		public static Range operator +(Range a, Range b)
+		{
+			return new Range(Math.Min(a.Start, b.Start), Math.Max(a.End, b.End));
 		}
 	}
 }

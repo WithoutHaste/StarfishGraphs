@@ -378,7 +378,7 @@ namespace GeometryTests
 			//assign
 			StarfishGeometry.Geometry.MarginOfError = 0.000001;
 			Wedge a = new Wedge(new Circle(new Point(1342.5 / Utilities.UNITS_TO_PIXELS, 867.2 / Utilities.UNITS_TO_PIXELS), 187.338 / Utilities.UNITS_TO_PIXELS), 0, 360);
-			Wedge b = new Wedge(new Circle(new Point(1170.45 / Utilities.UNITS_TO_PIXELS, 1133.45 / Utilities.UNITS_TO_PIXELS), 225.53 / Utilities.UNITS_TO_PIXELS), 648, 631);
+			Wedge b = new Wedge(new Circle(new Point(1170.45 / Utilities.UNITS_TO_PIXELS, 1133.45 / Utilities.UNITS_TO_PIXELS), 225.53 / Utilities.UNITS_TO_PIXELS), 631, 648);
 			//account
 			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
 			//act
@@ -393,7 +393,7 @@ namespace GeometryTests
 			//assign
 			StarfishGeometry.Geometry.MarginOfError = 0.000001;
 			Circle a = new Circle(new Point(1342.5 / Utilities.UNITS_TO_PIXELS, 867.2 / Utilities.UNITS_TO_PIXELS), 187.338 / Utilities.UNITS_TO_PIXELS);
-			Wedge b = new Wedge(new Circle(new Point(1170.45 / Utilities.UNITS_TO_PIXELS, 1133.45 / Utilities.UNITS_TO_PIXELS), 225.53 / Utilities.UNITS_TO_PIXELS), 648, 631);
+			Wedge b = new Wedge(new Circle(new Point(1170.45 / Utilities.UNITS_TO_PIXELS, 1133.45 / Utilities.UNITS_TO_PIXELS), 225.53 / Utilities.UNITS_TO_PIXELS), 631, 648);
 			//account
 			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
 			//act
@@ -409,7 +409,7 @@ namespace GeometryTests
 			StarfishGeometry.Geometry.MarginOfError = 0.000001;
 			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), -45, 45);
 			//act
-			bool result = a.DegreesContains(355);
+			bool result = a.Degrees.Overlaps(355);
 			//assert
 			Assert.IsTrue(result);
 		}
@@ -421,7 +421,7 @@ namespace GeometryTests
 			StarfishGeometry.Geometry.MarginOfError = 0.000001;
 			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), -45, 45);
 			//act
-			bool result = a.DegreesContains(10);
+			bool result = a.Degrees.Overlaps(10);
 			//assert
 			Assert.IsTrue(result);
 		}
@@ -433,7 +433,7 @@ namespace GeometryTests
 			StarfishGeometry.Geometry.MarginOfError = 0.000001;
 			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), -45, 45);
 			//act
-			bool result = a.DegreesContains(-50);
+			bool result = a.Degrees.Overlaps(-50);
 			//assert
 			Assert.IsFalse(result);
 		}
@@ -445,7 +445,7 @@ namespace GeometryTests
 			StarfishGeometry.Geometry.MarginOfError = 0.000001;
 			Wedge a = new Wedge(new Circle(new Point(3, 3), 3), -45, 45);
 			//act
-			bool result = a.DegreesContains(55);
+			bool result = a.Degrees.Overlaps(55);
 			//assert
 			Assert.IsFalse(result);
 		}

@@ -49,6 +49,7 @@
     <Compile Include="Shapes\Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shapes\Range.cs" />
+    <Compile Include="Shapes\RangeCircular.cs" />
     <Compile Include="Shapes\Shape.cs" />
     <Compile Include="Shapes\Wedge.cs" />
     <Compile Include="Shapes\WedgeUnbound.cs" />
