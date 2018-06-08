@@ -256,7 +256,6 @@ namespace StarfishGeometry.Shapes
 		/// </summary>
 		public double DegreesAtPoint(Point lineEnd)
 		{
-			//todo: move this into Circle object
 			if(Geometry.CoordinatePlane == Geometry.CoordinatePlanes.None)
 				throw new ArgumentException("Coordinate plane required.");
 

@@ -27,6 +27,7 @@ namespace StarfishGeometry.Shapes
 			Degrees = r;
 		}
 
+		//todo: move 360 to geometry static readonly
 		public WedgeUnbound(Point c, double rangeStart, double rangeEnd)
 		{
 			Center = c;

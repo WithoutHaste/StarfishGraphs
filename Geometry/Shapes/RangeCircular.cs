@@ -42,7 +42,6 @@ namespace StarfishGeometry.Shapes
 			return new RangeCircular(center - (span / 2), center + (span / 2), mod);
 		}
 
-		//todo: can I remove this? will the overriden Overlaps(double) still be used?
 		public bool Overlaps(RangeCircular b)
 		{
 			return (this.Overlaps(b.Start) || this.Overlaps(b.End) || b.Overlaps(this.Start) || b.Overlaps(this.End));

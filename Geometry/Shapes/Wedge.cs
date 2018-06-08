@@ -10,14 +10,11 @@ namespace StarfishGeometry.Shapes
 	/// <summary>
 	/// A wedge (aka circular sector) is a slice of a circle.
 	/// </summary>
-	public class Wedge : Shape, IDraw
+	public class Wedge : WedgeUnbound, IDraw
 	{
-		public readonly Circle Circle;
-		/// <summary>
-		/// 0 degrees is East of center, increases clockwise.
-		/// </summary>
-		public readonly RangeCircular Degrees;
+		public readonly double Radius;
 
+		public Circle Circle { get { return new Circle(Center, Radius); } }
 		public Point StartPoint { get { return Circle.PointAtDegrees(Degrees.Start); } }
 		public Point EndPoint { get { return Circle.PointAtDegrees(Degrees.End); } }
 		/// <summary>
@@ -47,16 +44,14 @@ namespace StarfishGeometry.Shapes
 			}
 		}
 
-		public Wedge(Circle c, RangeCircular r)
+		public Wedge(Circle c, RangeCircular r) : base(c.Center, r)
 		{
-			Circle = c;
-			Degrees = r;
+			Radius = c.Radius;
 		}
 
-		public Wedge(Circle c, double rangeStart, double rangeEnd)
+		public Wedge(Circle c, double rangeStart, double rangeEnd) : base(c.Center, rangeStart, rangeEnd)
 		{
-			Circle = c;
-			Degrees = new RangeCircular(rangeStart, rangeEnd, 360);
+			Radius = c.Radius;
 		}
 
 		/// <summary>
