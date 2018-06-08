@@ -118,7 +118,7 @@ namespace StarfishGeometry.Shapes
 				(float)(2 * unitsToPixels), 
 				(float)(2 * unitsToPixels), 
 				0, 
-				360); 
+				Circle.DEGREES_IN_CIRCLE); 
 		}
 	}
 }

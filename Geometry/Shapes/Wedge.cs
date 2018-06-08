@@ -76,7 +76,7 @@ namespace StarfishGeometry.Shapes
 					return true;
 			}
 			//arc overlaps circle
-			if(a.ArcOverlapsArc(new Wedge(b, 0, 360)))
+			if(a.ArcOverlapsArc(new Wedge(b, 0, Circle.DEGREES_IN_CIRCLE)))
 				return true;
 			//wedge entirely contains circle or circle entirely contains wedge
 			if(a.Contains(b))

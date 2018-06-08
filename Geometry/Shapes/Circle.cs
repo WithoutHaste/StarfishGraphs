@@ -9,10 +9,12 @@ namespace StarfishGeometry.Shapes
 {
 	public class Circle : Shape, IDraw
 	{
-		public static double RADIANS_90DEGREES = Math.PI / 2;
-		public static double RADIANS_180DEGREES = Math.PI;
-		public static double RADIANS_270DEGREES = 3 * Math.PI / 2;
-		public static double RADIANS_360DEGREES = 2 * Math.PI;
+		public static readonly int DEGREES_IN_CIRCLE = 360;
+		public static readonly int DEGREES_IN_HALF_CIRCLE = 180;
+		public static readonly double RADIANS_90DEGREES = Math.PI / 2;
+		public static readonly double RADIANS_180DEGREES = Math.PI;
+		public static readonly double RADIANS_270DEGREES = 3 * Math.PI / 2;
+		public static readonly double RADIANS_360DEGREES = 2 * Math.PI;
 
 		public readonly double X;
 		public readonly double Y;
@@ -270,13 +272,13 @@ namespace StarfishGeometry.Shapes
 
 			double lineLength = Center.Distance(lineEnd);
 			double radians = Math.Abs(Math.Asin((lineEnd.Y - Center.Y) / lineLength));
-			double degrees = Shapes.Circle.RadiansToDegrees(radians) % 360;
+			double degrees = Shapes.Circle.RadiansToDegrees(radians) % DEGREES_IN_CIRCLE;
 			switch(direction)
 			{
 				case Geometry.Direction.SouthEast: return degrees;
-				case Geometry.Direction.SouthWest: return 180 - degrees;
-				case Geometry.Direction.NorthWest: return 180 + degrees;
-				case Geometry.Direction.NorthEast: return 360 - degrees;
+				case Geometry.Direction.SouthWest: return DEGREES_IN_HALF_CIRCLE - degrees;
+				case Geometry.Direction.NorthWest: return DEGREES_IN_HALF_CIRCLE + degrees;
+				case Geometry.Direction.NorthEast: return DEGREES_IN_CIRCLE - degrees;
 			}
 
 			throw new NotImplementedException(String.Format("Direction not supported: {0}.", direction));
@@ -403,7 +405,7 @@ namespace StarfishGeometry.Shapes
 				(float)(Diameter * unitsToPixels), 
 				(float)(Diameter * unitsToPixels), 
 				0, 
-				360); 
+				DEGREES_IN_CIRCLE); 
 		}
 	}
 }

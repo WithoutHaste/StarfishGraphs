@@ -27,11 +27,10 @@ namespace StarfishGeometry.Shapes
 			Degrees = r;
 		}
 
-		//todo: move 360 to geometry static readonly
 		public WedgeUnbound(Point c, double rangeStart, double rangeEnd)
 		{
 			Center = c;
-			Degrees = new RangeCircular(rangeStart, rangeEnd, 360);
+			Degrees = new RangeCircular(rangeStart, rangeEnd, Circle.DEGREES_IN_CIRCLE);
 		}
 	}
 }
