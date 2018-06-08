@@ -9,7 +9,8 @@ namespace StarfishGeometry
 {
     public static class Geometry
     {
-		//todo: make sure MarginOfError is applied to all equality in shapes operations
+		//todo: make sure MarginOfError is applied to all equality in shapes operations, like Circle.ContainsPoint
+		//todo: is there reason to allow different margins of error for different shapes? like, they could override the global geometry margin of error if they are set
 
 		/// <summary>
 		/// When determining equality, all values have a +- margin of error.

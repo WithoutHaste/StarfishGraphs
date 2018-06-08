@@ -64,13 +64,15 @@ namespace StarfishGeometry.Shapes
 		/// <summary>
 		/// Returns a range that covers all the area both A and B cover, including any gap in between.
 		/// If the ranges overlap, there is no gap filled in.
-		/// Gaps are covered from direction A to B.
+		/// Gaps are covered from direction A to B, therefore this operation is not commutative.
 		/// </summary>
 		public static RangeCircular operator +(RangeCircular a, RangeCircular b)
 		{
 			if(a.CircularModulus != b.CircularModulus)
 				throw new ArgumentException("RangeCirculars with different Modulus values cannot be combined.");
-			return new RangeCircular(Math.Min(a.Start, b.Start), Math.Max(a.End, b.End), a.CircularModulus);
+			if(a.Overlaps(b))
+				return new RangeCircular(Math.Min(a.Start, b.Start), Math.Max(a.End, b.End), a.CircularModulus);
+			return new RangeCircular(a.Start, b.End, a.CircularModulus);
 		}
 
 		public double Mod(double number)
@@ -88,6 +90,30 @@ namespace StarfishGeometry.Shapes
 			while(number < 0)
 				number += m;
 			return number % m;
+		}
+
+		public static bool operator ==(RangeCircular a, RangeCircular b)
+		{
+			return (Geometry.WithinMarginOfError(a.Start, b.Start) && Geometry.WithinMarginOfError(a.End, b.End));
+		}
+
+		public static bool operator !=(RangeCircular a, RangeCircular b)
+		{
+			return (!Geometry.WithinMarginOfError(a.Start, b.Start) || !Geometry.WithinMarginOfError(a.End, b.End));
+		}
+
+		public override bool Equals(Object b)
+		{
+			if(b != null && b is RangeCircular)
+			{
+				return (this == (RangeCircular)b);
+			}
+			return false;
+		}
+
+		public override int GetHashCode()
+		{
+			return Start.GetHashCode() ^ End.GetHashCode() ^ CircularModulus.GetHashCode();
 		}
 	}
 }

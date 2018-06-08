@@ -21,6 +21,10 @@ namespace StarfishGeometry.Shapes
 				throw new ArgumentException("Point.X cannot be NaN.");
 			if(double.IsNaN(y))
 				throw new ArgumentException("Point.Y cannot be NaN.");
+			if(double.IsInfinity(x))
+				throw new ArgumentException("Point.X cannot be +/- Infinity.");
+			if(double.IsInfinity(y))
+				throw new ArgumentException("Point.Y cannot be +/- Infinity.");
 			X = x;
 			Y = y;
 		}

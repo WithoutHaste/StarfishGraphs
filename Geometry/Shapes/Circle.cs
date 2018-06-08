@@ -182,8 +182,6 @@ namespace StarfishGeometry.Shapes
 			return true;
 		}
 
-		//todo: should be checking margin of error on all equalities, like Contains Point
-
 		/// <summary>
 		/// Point B lies within or on this circle.
 		/// </summary>

@@ -55,6 +55,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestLine.cs" />
     <Compile Include="TestLineSegment.cs" />
+    <Compile Include="TestPoint.cs" />
+    <Compile Include="TestRange.cs" />
     <Compile Include="TestRangeCircular.cs" />
     <Compile Include="TestWedge.cs" />
     <Compile Include="Utilities.cs" />
