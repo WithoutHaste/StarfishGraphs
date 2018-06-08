@@ -17,7 +17,6 @@ namespace StarfishGeometry.Shapes
 		public readonly double X;
 		public readonly double Y;
 		public readonly double Radius;
-		public readonly Geometry.CoordinatePlane CoordinatePlane;
 
 		public Point Center { get { return new Point(X, Y); } }
 		public double Diameter { get { return 2 * Radius; } }
@@ -26,20 +25,20 @@ namespace StarfishGeometry.Shapes
 
 		public double MaxXDegrees {
 			get {
-				switch(CoordinatePlane)
+				switch(Geometry.CoordinatePlane)
 				{
-					case Geometry.CoordinatePlane.Screen: return 0;
-					case Geometry.CoordinatePlane.Paper: return 0;
+					case Geometry.CoordinatePlanes.Screen: return 0;
+					case Geometry.CoordinatePlanes.Paper: return 0;
 					default: throw new Exception("Coordinate plane not supported.");
 				}
 			}
 		}
 		public double MaxYDegrees {
 			get {
-				switch(CoordinatePlane)
+				switch(Geometry.CoordinatePlane)
 				{
-					case Geometry.CoordinatePlane.Screen: return 90;
-					case Geometry.CoordinatePlane.Paper: return 270;
+					case Geometry.CoordinatePlanes.Screen: return 90;
+					case Geometry.CoordinatePlanes.Paper: return 270;
 					default: throw new Exception("Coordinate plane not supported.");
 				}
 			}
@@ -50,7 +49,6 @@ namespace StarfishGeometry.Shapes
 			X = x;
 			Y = y;
 			Radius = radius;
-			CoordinatePlane = Geometry.CoordinatePlane.Screen;
 		}
 
 		public Circle(Point center, double radius)
@@ -58,23 +56,6 @@ namespace StarfishGeometry.Shapes
 			X = center.X;
 			Y = center.Y;
 			Radius = radius;
-			CoordinatePlane = Geometry.CoordinatePlane.Screen;
-		}
-
-		public Circle(double x, double y, double radius, Geometry.CoordinatePlane coordinatePlane)
-		{
-			X = x;
-			Y = y;
-			Radius = radius;
-			CoordinatePlane = coordinatePlane;
-		}
-
-		public Circle(Point center, double radius, Geometry.CoordinatePlane coordinatePlane)
-		{
-			X = center.X;
-			Y = center.Y;
-			Radius = radius;
-			CoordinatePlane = coordinatePlane;
 		}
 
 		/// <summary>
@@ -85,9 +66,6 @@ namespace StarfishGeometry.Shapes
 			//following the method in math/intersectionCircleCircle.png
 
 			Circle a = this;
-			if(a.CoordinatePlane != b.CoordinatePlane)
-				throw new Exception("Both circles in operation must have same coordinate plane.");
-
 			double d = a.Center.Distance(b.Center); //distance between centers
 			if(d > a.Radius + b.Radius)
 			{
@@ -257,10 +235,10 @@ namespace StarfishGeometry.Shapes
 				deltaY = -1 * Math.Sin(RADIANS_360DEGREES - radians) * Radius;
 			}
 
-			switch(CoordinatePlane)
+			switch(Geometry.CoordinatePlane)
 			{
-				case Geometry.CoordinatePlane.Screen: return new Point(Center.X + deltaX, Center.Y + deltaY);
-				case Geometry.CoordinatePlane.Paper: return new Point(Center.X + deltaX, Center.Y - deltaY);
+				case Geometry.CoordinatePlanes.Screen: return new Point(Center.X + deltaX, Center.Y + deltaY);
+				case Geometry.CoordinatePlanes.Paper: return new Point(Center.X + deltaX, Center.Y - deltaY);
 				default: throw new Exception("Coordinate plane not supported.");
 			}
 		}
@@ -275,7 +253,7 @@ namespace StarfishGeometry.Shapes
 
 		public double DegreesAtPoint(Point b)
 		{
-			return Geometry.DegreesOfLine(Center, b, CoordinatePlane);
+			return Geometry.DegreesOfLine(Center, b);
 		}
 
 		/// <summary>

@@ -17,7 +17,7 @@ namespace GeometryTests
 			LineSegment aEdge = new LineSegment(a.Circle.Center, a.EndPoint);
 			Point centerB =  Geometry.PointOnLine(a.Circle.Center, a.EndPoint, a.Circle.Radius * 0.25);
 			Circle circleB = new Circle(centerB, a.Circle.Radius * 0.5);
-			double startDegreesB = Geometry.DegreesOfLine(centerB, a.EndPoint, circleB.CoordinatePlane);
+			double startDegreesB = Geometry.DegreesOfLine(centerB, a.EndPoint);
 			Wedge b = new Wedge(circleB, startDegreesB, startDegreesB + 10);
 			//account
 			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
@@ -36,7 +36,7 @@ namespace GeometryTests
 			LineSegment aEdge = new LineSegment(a.Circle.Center, a.EndPoint);
 			Point centerB =  Geometry.PointOnLine(a.Circle.Center, a.EndPoint, a.Circle.Radius * 0.25);
 			Circle circleB = new Circle(centerB, a.Circle.Radius * 1.5);
-			double startDegreesB = Geometry.DegreesOfLine(centerB, a.EndPoint, circleB.CoordinatePlane);
+			double startDegreesB = Geometry.DegreesOfLine(centerB, a.EndPoint);
 			Wedge b = new Wedge(circleB, startDegreesB, startDegreesB + 10);
 			//account
 			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));
@@ -56,7 +56,7 @@ namespace GeometryTests
 			Point centerB =  Geometry.PointOnLine(a.Circle.Center, a.EndPoint, a.Circle.Radius * 0.25);
 			centerB = new Point(centerB.X + 0.05, centerB.Y);
 			Circle circleB = new Circle(centerB, a.Circle.Radius * 0.5);
-			double startDegreesB = Geometry.DegreesOfLine(centerB, a.EndPoint, circleB.CoordinatePlane) + 2;
+			double startDegreesB = Geometry.DegreesOfLine(centerB, a.EndPoint) + 2;
 			Wedge b = new Wedge(circleB, startDegreesB, startDegreesB + 10);
 			//account
 			Utilities.SaveDiagram(new IDraw[] { a, b }, nameof(TestWedge));

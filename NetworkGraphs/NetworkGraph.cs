@@ -77,6 +77,8 @@ namespace NetworkGraphs
 			List<int> parentIds = new List<int>();
 			Dictionary<int, WedgeNode> nodes = new Dictionary<int, WedgeNode>();
 
+			Geometry.CoordinatePlane = Geometry.CoordinatePlanes.Screen;
+
 			Shapes.Point center = new Shapes.Point(1000, 1000);
 			nodes[startNodeId] = new WedgeNode()
 			{
@@ -123,7 +125,7 @@ namespace NetworkGraphs
 					calculations = new ChildCalculations(childCount + 1, 360, nodeWidth);
 					Shapes.Point newCenter = Geometry.PointPastLine(parentNode.ParentNode.Center, parentNode.Center, calculations.Radius * 1.2);
 					parentNode.Center = newCenter;
-					double connectionToParentAtDegrees = Geometry.DegreesOfLine(newCenter, parentNode.ParentNode.Center, Geometry.CoordinatePlane.Screen);
+					double connectionToParentAtDegrees = Geometry.DegreesOfLine(newCenter, parentNode.ParentNode.Center);
 					parentNode.ChildrenWedge = new Shapes.WedgeUnbound(newCenter, connectionToParentAtDegrees + calculations.AngleUnit, 360 - calculations.AngleUnit);
 				}
 				else

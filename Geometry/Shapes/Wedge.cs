@@ -157,7 +157,7 @@ namespace StarfishGeometry.Shapes
 			//are any of those degrees within the wedge degree range?
 			foreach(Point point in fullCircleIntersections)
 			{
-				double degrees = Geometry.DegreesOfLine(Circle.Center, point, Circle.CoordinatePlane);
+				double degrees = Geometry.DegreesOfLine(Circle.Center, point);
 				if(Degrees.Overlaps(degrees))
 				{
 					return true;
@@ -177,9 +177,9 @@ namespace StarfishGeometry.Shapes
 				return false;
 			foreach(Point point in fullCircleIntersections)
 			{
-				if(a.Circle.Center == point || a.Degrees.Overlaps(Geometry.DegreesOfLine(a.Circle.Center, point, a.Circle.CoordinatePlane)))
+				if(a.Circle.Center == point || a.Degrees.Overlaps(Geometry.DegreesOfLine(a.Circle.Center, point)))
 				{
-					if(b.Circle.Center == point || b.Degrees.Overlaps(Geometry.DegreesOfLine(b.Circle.Center, point, b.Circle.CoordinatePlane)))
+					if(b.Circle.Center == point || b.Degrees.Overlaps(Geometry.DegreesOfLine(b.Circle.Center, point)))
 					{
 						return true;
 					}
@@ -210,7 +210,7 @@ namespace StarfishGeometry.Shapes
 			double distance = Circle.Center.Distance(b);
 			if(distance > Circle.Radius)
 				return false;
-			double degrees = Geometry.DegreesOfLine(Circle.Center, b, Circle.CoordinatePlane);
+			double degrees = Geometry.DegreesOfLine(Circle.Center, b);
 			return Degrees.Overlaps(degrees);
 		}
 

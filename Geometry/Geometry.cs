@@ -18,7 +18,9 @@ namespace StarfishGeometry
 		/// </summary>
 		public static double MarginOfError = 0.00000001;
 
-		public enum CoordinatePlane : int {
+		public static CoordinatePlanes CoordinatePlane = CoordinatePlanes.Screen;
+
+		public enum CoordinatePlanes : int {
 			None = 0,
 			/// <summary>
 			/// Computer screens have (0,0) in the upper-left corner and increase to the right and down.
@@ -39,13 +41,13 @@ namespace StarfishGeometry
 		/// <summary>
 		/// Given a line emerging from the center of a circle, what degrees is the line angle at? 0 degrees is East from center, and increases clockwise.
 		/// </summary>
-		public static double DegreesOfLine(Point circleCenter, Point lineEnd, CoordinatePlane coordinatePlane)
+		public static double DegreesOfLine(Point circleCenter, Point lineEnd)
 		{
 			//todo: move this into Circle object
-			if(coordinatePlane == CoordinatePlane.None)
+			if(CoordinatePlane == CoordinatePlanes.None)
 				throw new Exception("Coordinate plane required");
 
-			Direction direction = LineDirection(circleCenter, lineEnd, coordinatePlane);
+			Direction direction = LineDirection(circleCenter, lineEnd);
 			switch(direction)
 			{
 				case Direction.East: return 0;
@@ -95,14 +97,14 @@ namespace StarfishGeometry
 		/// Given directed line A to B, what direction is it pointing?
 		/// North, South, East, and West are precise. The inbetween directions are vague.
 		/// </summary>
-		public static Direction LineDirection(Point a, Point b, CoordinatePlane coordinatePlane)
+		public static Direction LineDirection(Point a, Point b)
 		{
 			if(a == b) 
 				return Direction.None;
-			switch(coordinatePlane)
+			switch(CoordinatePlane)
 			{
-				case CoordinatePlane.Screen: return LineDirection_Screen(a, b);
-				case CoordinatePlane.Paper: return LineDirection_Paper(a, b);
+				case CoordinatePlanes.Screen: return LineDirection_Screen(a, b);
+				case CoordinatePlanes.Paper: return LineDirection_Paper(a, b);
 				default: throw new Exception("Unsupported coordinate plane.");
 			}
 		}
