@@ -33,7 +33,7 @@ namespace StarfishGeometry.Shapes
 		public RangeCircular(double s, double e, int mod) : base(Mod(s, mod), Mod(e, mod))
 		{
 			if(mod <= 0)
-				throw new Exception("RangeCircular modulus must be greater than 0.");
+				throw new ArgumentException("RangeCircular.Modulus must be greater than 0.");
 			CircularModulus = mod;
 		}
 
@@ -70,7 +70,7 @@ namespace StarfishGeometry.Shapes
 		public static RangeCircular operator +(RangeCircular a, RangeCircular b)
 		{
 			if(a.CircularModulus != b.CircularModulus)
-				throw new Exception("RangeCirculars with different Modulus values cannot be combined.");
+				throw new ArgumentException("RangeCirculars with different Modulus values cannot be combined.");
 			return new RangeCircular(Math.Min(a.Start, b.Start), Math.Max(a.End, b.End), a.CircularModulus);
 		}
 
@@ -85,7 +85,7 @@ namespace StarfishGeometry.Shapes
 		public static double Mod(double number, int m)
 		{
 			if(m <= 0)
-				throw new Exception("Requires a positive, non-zero m.");
+				throw new ArgumentException("RangeCircular.Mod requires a positive, non-zero M.");
 			while(number < 0)
 				number += m;
 			return number % m;

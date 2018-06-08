@@ -29,7 +29,7 @@ namespace StarfishGeometry.Shapes
 				{
 					case Geometry.CoordinatePlanes.Screen: return 0;
 					case Geometry.CoordinatePlanes.Paper: return 0;
-					default: throw new Exception("Coordinate plane not supported.");
+					default: throw new NotImplementedException("Coordinate plane not supported.");
 				}
 			}
 		}
@@ -39,7 +39,7 @@ namespace StarfishGeometry.Shapes
 				{
 					case Geometry.CoordinatePlanes.Screen: return 90;
 					case Geometry.CoordinatePlanes.Paper: return 270;
-					default: throw new Exception("Coordinate plane not supported.");
+					default: throw new NotImplementedException("Coordinate plane not supported.");
 				}
 			}
 		}
@@ -239,7 +239,7 @@ namespace StarfishGeometry.Shapes
 			{
 				case Geometry.CoordinatePlanes.Screen: return new Point(Center.X + deltaX, Center.Y + deltaY);
 				case Geometry.CoordinatePlanes.Paper: return new Point(Center.X + deltaX, Center.Y - deltaY);
-				default: throw new Exception("Coordinate plane not supported.");
+				default: throw new NotImplementedException("Coordinate plane not supported.");
 			}
 		}
 

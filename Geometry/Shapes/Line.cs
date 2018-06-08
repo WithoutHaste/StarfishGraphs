@@ -27,12 +27,10 @@ namespace StarfishGeometry.Shapes
 		public bool IsVertical { get { return (A.X == B.X); } }
 		public bool IsHorizontal { get { return (A.Y == B.Y); } }
 
-		//todo: subclass exceptions to be explicit
-
 		public Line(Point a, Point b)
 		{
 			if(a == b)
-				throw new Exception("Line requires two unique points.");
+				throw new ArgumentException("Points A and B cannot be the same.");
 			A = a;
 			B = b;
 			IsDirected = false;
@@ -41,7 +39,7 @@ namespace StarfishGeometry.Shapes
 		public Line(Point a, Point b, bool isDirected)
 		{
 			if(a == b)
-				throw new Exception("Line requires two unique points.");
+				throw new ArgumentException("Points A and B cannot be the same.");
 			A = a;
 			B = b;
 			IsDirected = isDirected;

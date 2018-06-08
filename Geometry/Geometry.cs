@@ -43,7 +43,7 @@ namespace StarfishGeometry
 		{
 			//todo: move this into Circle object
 			if(CoordinatePlane == CoordinatePlanes.None)
-				throw new Exception("Coordinate plane required");
+				throw new ArgumentException("Coordinate plane required.");
 
 			Direction direction = LineDirection(circleCenter, lineEnd);
 			switch(direction)
@@ -65,7 +65,7 @@ namespace StarfishGeometry
 				case Direction.NorthEast: return 360 - degrees;
 			}
 
-			throw new Exception(String.Format("Unsupported direction: {0}.", direction));
+			throw new NotImplementedException(String.Format("Direction not supported: {0}.", direction));
 		}
 
 		/// <summary>
@@ -75,7 +75,7 @@ namespace StarfishGeometry
 		{
 			double lineLength = a.Distance(b);
 			if(lineLength == 0)
-				throw new Exception("Line length must be greater than 0");
+				throw new ArgumentException("Point A and B cannot be the same.");
 			double lengthRatio = distance / lineLength;
 			double x = ((1 - lengthRatio) * a.X) + (lengthRatio * b.X);
 			double y = ((1 - lengthRatio) * a.Y) + (lengthRatio * b.Y);
@@ -103,7 +103,7 @@ namespace StarfishGeometry
 			{
 				case CoordinatePlanes.Screen: return LineDirection_Screen(a, b);
 				case CoordinatePlanes.Paper: return LineDirection_Paper(a, b);
-				default: throw new Exception("Unsupported coordinate plane.");
+				default: throw new NotImplementedException("Coordinate plane not supported.");
 			}
 		}
 

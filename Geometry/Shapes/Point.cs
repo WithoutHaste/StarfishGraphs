@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace StarfishGeometry.Shapes
 {
-	//todo: can user set a geometry-wide margin of error? some of these ops use the margin of error where you can't specify it
 	public class Point : Shape, IDraw
 	{
 		public readonly double X;
@@ -19,9 +18,9 @@ namespace StarfishGeometry.Shapes
 		public Point(double x, double y)
 		{
 			if(double.IsNaN(x))
-				throw new Exception("Point.X cannot be NaN.");
+				throw new ArgumentException("Point.X cannot be NaN.");
 			if(double.IsNaN(y))
-				throw new Exception("Point.Y cannot be NaN.");
+				throw new ArgumentException("Point.Y cannot be NaN.");
 			X = x;
 			Y = y;
 		}

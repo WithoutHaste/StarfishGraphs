@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace StarfishGeometry.Shapes
 {
-	//todo: should I rename Start and End to Min and Max?
 	public class Range : Shape
 	{
 		/// <summary>
