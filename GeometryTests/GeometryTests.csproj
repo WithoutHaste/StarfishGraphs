@@ -52,7 +52,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="TestCircle.cs" />
-    <Compile Include="TestDegreesOfLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestLine.cs" />
     <Compile Include="TestLineSegment.cs" />

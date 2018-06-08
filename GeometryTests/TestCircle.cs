@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using StarfishGeometry;
 using StarfishGeometry.Shapes;
 
 namespace GeometryTests
@@ -360,6 +361,62 @@ namespace GeometryTests
 			Assert.AreEqual(180, degreesC);
 			Assert.AreEqual(270, degreesD);
 			Assert.AreEqual(360, degreesE);
+		}
+		
+		[TestMethod]
+		public void DegreesAtPoint_OnPaper_A()
+		{
+			//assign
+			Geometry.CoordinatePlane = Geometry.CoordinatePlanes.Paper;
+			Geometry.MarginOfError = 0.1;
+			Circle circle = new Circle(new Point(0, 0), 1);
+			Point lineEnd = new Point(13, 22.5166604984);
+			//act
+			double degrees = circle.DegreesAtPoint(lineEnd);
+			//assert
+			Assert.IsTrue(Geometry.WithinMarginOfError(300, degrees));
+		}
+
+		[TestMethod]
+		public void DegreesAtPoint_OnScreen_A()
+		{
+			//assign
+			Geometry.CoordinatePlane = Geometry.CoordinatePlanes.Screen;
+			Geometry.MarginOfError = 0.1;
+			Circle circle = new Circle(new Point(0, 0), 1);
+			Point lineEnd = new Point(13, 22.5166604984);
+			//act
+			double degrees = circle.DegreesAtPoint(lineEnd);
+			//assert
+			Assert.IsTrue(Geometry.WithinMarginOfError(60, degrees));
+		}
+
+		[TestMethod]
+		public void DegreesAtPoint_OnScreen_B()
+		{
+			//assign
+			Geometry.CoordinatePlane = Geometry.CoordinatePlanes.Screen;
+			Geometry.MarginOfError = 5;
+			Circle circle = new Circle(new Point(2019, 866), 1);
+			Point lineEnd = new Point(1500, 1000);
+			//act
+			double degrees = circle.DegreesAtPoint(lineEnd);
+			//assert
+			Assert.IsTrue(Geometry.WithinMarginOfError(165, degrees));
+		}
+
+		[TestMethod]
+		public void DegreesAtPoint_OnScreen_C()
+		{
+			//assign
+			Geometry.CoordinatePlane = Geometry.CoordinatePlanes.Screen;
+			Geometry.MarginOfError = 5;
+			Circle circle = new Circle(new Point(1737, 1730), 1);
+			Point lineEnd = new Point(1573, 1227);
+			//act
+			double degrees = circle.DegreesAtPoint(lineEnd);
+			//assert
+			Assert.IsTrue(Geometry.WithinMarginOfError(252, degrees));
 		}
 
 	}

@@ -37,38 +37,6 @@ namespace StarfishGeometry
 		}
 
 		/// <summary>
-		/// Given a line emerging from the center of a circle, what degrees is the line angle at? 0 degrees is East from center, and increases clockwise.
-		/// </summary>
-		public static double DegreesOfLine(Point circleCenter, Point lineEnd)
-		{
-			//todo: move this into Circle object
-			if(CoordinatePlane == CoordinatePlanes.None)
-				throw new ArgumentException("Coordinate plane required.");
-
-			Direction direction = LineDirection(circleCenter, lineEnd);
-			switch(direction)
-			{
-				case Direction.East: return 0;
-				case Direction.South: return 90;
-				case Direction.West: return 180;
-				case Direction.North: return 270;
-			}
-
-			double lineLength = circleCenter.Distance(lineEnd);
-			double radians = Math.Abs(Math.Asin((lineEnd.Y - circleCenter.Y) / lineLength));
-			double degrees = Shapes.Circle.RadiansToDegrees(radians) % 360;
-			switch(direction)
-			{
-				case Direction.SouthEast: return degrees;
-				case Direction.SouthWest: return 180 - degrees;
-				case Direction.NorthWest: return 180 + degrees;
-				case Direction.NorthEast: return 360 - degrees;
-			}
-
-			throw new NotImplementedException(String.Format("Direction not supported: {0}.", direction));
-		}
-
-		/// <summary>
 		/// Calculates point along line AB, starting at A and moving towards B
 		/// </summary>
 		public static Point PointOnLine(Point a, Point b, double distance)

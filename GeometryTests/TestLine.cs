@@ -12,6 +12,7 @@ namespace GeometryTests
 		public void Slope()
 		{
 			//assign
+			Geometry.MarginOfError = 0.001;
 			Line a = new Line(new Point(0, -4.0/9.0), new Point(-4.0/6.0, 0));
 			//act
 			double result = a.Slope;
@@ -23,6 +24,7 @@ namespace GeometryTests
 		public void PerpendicularSlope()
 		{
 			//assign
+			Geometry.MarginOfError = 0.001;
 			Line a = new Line(new Point(0, -4.0/9.0), new Point(-4.0/6.0, 0));
 			//act
 			double result = a.PerpendicularSlope;
@@ -34,6 +36,7 @@ namespace GeometryTests
 		public void GetPerpendicularIntersect()
 		{
 			//assign
+			Geometry.MarginOfError = 0.001;
 			Line a = new Line(new Point(0, 15.0/6.0), new Point(15.0/8.0, 0));
 			Point c = new Point(3, -4);
 			//act

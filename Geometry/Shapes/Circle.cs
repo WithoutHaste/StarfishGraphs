@@ -251,9 +251,36 @@ namespace StarfishGeometry.Shapes
 			return PointAtRadians(DegreesToRadians(degrees));
 		}
 
-		public double DegreesAtPoint(Point b)
+		/// <summary>
+		/// Given a line from the center of a circle to a point, what degrees is the line angle at? 0 degrees is East from center, and increases clockwise.
+		/// </summary>
+		public double DegreesAtPoint(Point lineEnd)
 		{
-			return Geometry.DegreesOfLine(Center, b);
+			//todo: move this into Circle object
+			if(Geometry.CoordinatePlane == Geometry.CoordinatePlanes.None)
+				throw new ArgumentException("Coordinate plane required.");
+
+			Geometry.Direction direction = Geometry.LineDirection(Center, lineEnd);
+			switch(direction)
+			{
+				case Geometry.Direction.East: return 0;
+				case Geometry.Direction.South: return 90;
+				case Geometry.Direction.West: return 180;
+				case Geometry.Direction.North: return 270;
+			}
+
+			double lineLength = Center.Distance(lineEnd);
+			double radians = Math.Abs(Math.Asin((lineEnd.Y - Center.Y) / lineLength));
+			double degrees = Shapes.Circle.RadiansToDegrees(radians) % 360;
+			switch(direction)
+			{
+				case Geometry.Direction.SouthEast: return degrees;
+				case Geometry.Direction.SouthWest: return 180 - degrees;
+				case Geometry.Direction.NorthWest: return 180 + degrees;
+				case Geometry.Direction.NorthEast: return 360 - degrees;
+			}
+
+			throw new NotImplementedException(String.Format("Direction not supported: {0}.", direction));
 		}
 
 		/// <summary>
