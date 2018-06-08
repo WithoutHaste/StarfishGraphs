@@ -69,7 +69,7 @@ namespace GeometryTests
 			Circle a = new Circle(new Point(53.8075, 29.1875), 4.6825) / Utilities.UNITS_TO_PIXELS;
 			Line b = new Line(new Point(51.27, 25), new Point(51.27, 19.125)) / Utilities.UNITS_TO_PIXELS;
 			//account
-			Utilities.SaveDiagram(new IDraw[] { a, b.GetLineSegment() }, nameof(TestCircle));
+			Utilities.SaveDiagram(new IDraw[] { a, b.ToLineSegment() }, nameof(TestCircle));
 			//act
 			Point[] result = a.GetIntersectionPoints(b);
 			//assert

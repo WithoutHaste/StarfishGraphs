@@ -126,7 +126,7 @@ namespace StarfishGeometry.Shapes
 		/// </summary>
 		public bool Overlaps(LineSegment b)
 		{
-			Point[] lineIntersectionPoints = GetIntersectionPoints(b.GetLine());
+			Point[] lineIntersectionPoints = GetIntersectionPoints(b.ToLine());
 			if(lineIntersectionPoints == null)
 				return false;
 			foreach(Point point in lineIntersectionPoints)
@@ -308,7 +308,7 @@ namespace StarfishGeometry.Shapes
 
 		public Point[] GetIntersectionPoints(LineSegment lineSegment)
 		{
-			Point[] lineIntersectionPoints = GetIntersectionPoints(lineSegment.GetLine());
+			Point[] lineIntersectionPoints = GetIntersectionPoints(lineSegment.ToLine());
 			if(lineIntersectionPoints == null)
 				return null;
 			List<Point> segmentIntersectionPoints = new List<Point>();

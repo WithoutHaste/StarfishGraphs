@@ -7,54 +7,26 @@ using System.Threading.Tasks;
 
 namespace StarfishGeometry.Shapes
 {
-	//todo: linesegment should probably be parent-object of line
-	
-	public class LineSegment : Shape, IDraw
+	public class LineSegment : Line, IDraw
 	{
-		public readonly Point A;
-		public readonly Point B;
-		/// <summary>
-		/// When directed, the direction is A to B.
-		/// </summary>
-		public readonly bool IsDirected;
-
 		public double MaxX { get { return Math.Max(A.X, B.X); } }
 		public double MaxY { get { return Math.Max(A.Y, B.Y); } }
 
-		public LineSegment(Point a, Point b)
+		public LineSegment(Point a, Point b) : base(a, b)
 		{
-			A = a;
-			B = b;
-			IsDirected = false;
 		}
 
-		public LineSegment(Point a, Point b, bool isDirected)
+		public LineSegment(Point a, Point b, bool isDirected) : base(a, b, isDirected)
 		{
-			A = a;
-			B = b;
-			IsDirected = isDirected;
 		}
-
-		/// <summary>
-		/// Slope assumes direction from A to B.
-		/// </summary>
-		public double Slope { get { return ((B.Y - A.Y) / (B.X - A.X)); } }
-
-		public double PerpendicularSlope { get { return -1 * (1 / Slope); } }
-
-		public double YIntercept { get { return A.Y - (Slope * A.X); } }
-
-		public bool IsVertical { get { return (A.X == B.X); } }
-
-		public bool IsHorizontal { get { return (A.Y == B.Y); } }
 
 		public double Length { get { return A.Distance(B); } }
 
-		public Line GetLine()
+		public Line ToLine()
 		{
 			return new Line(A, B, IsDirected);
 		}
-
+		
 		public bool Overlaps(Point c)
 		{
 			if(IsVertical)

@@ -47,7 +47,7 @@ namespace StarfishGeometry.Shapes
 			IsDirected = isDirected;
 		}
 
-		public LineSegment GetLineSegment()
+		public LineSegment ToLineSegment()
 		{
 			return new LineSegment(A, B, IsDirected);
 		}

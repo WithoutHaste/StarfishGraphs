@@ -9,8 +9,6 @@ namespace StarfishGeometry
 {
     public static class Geometry
     {
-		//todo: move CoordinatePlane setting to public static like this
-
 		//todo: make sure MarginOfError is applied to all equality in shapes operations
 
 		/// <summary>
